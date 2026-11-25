@@ -100,6 +100,7 @@ details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointe
   .adr-pie{background:#0d1526;color:#9fb4d8;padding:20px 18px 86px;font-size:14px;line-height:1.6;text-align:center;border-top:3px solid #2563eb;margin-top:26px}
   .adr-pie a{color:#60a5fa}
   .adr-flotante{position:fixed;right:16px;bottom:16px;z-index:999;background:#22c55e;color:#fff!important;font-weight:700;padding:13px 20px;border-radius:999px;text-decoration:none;font-size:16px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+  #cfg-tarjeta{display:none!important}
 </style>
 </head>
 <body>
@@ -161,7 +162,7 @@ details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointe
     <div id="ci-modo-estado" class="okcaja">Marca actual: <strong>Trabajé de DÍA</strong>. Toca los días del calendario.</div>
     <div class="cal-cab"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
     <div class="cal-grid" id="ci-grid"></div>
-    <p class="peq">Verde: trabajaste de día · Azul oscuro: trabajaste de noche · Azul claro: descanso · Naranja: incapacidad. Fondo amarillo: domingo · Fondo rosado: festivo. Tus marcas quedan <strong>guardadas en este celular</strong>. Con el botón <strong>🎉 Festivo</strong> marcas o quitas los festivos de cualquier año tocando el día: sirve para el año siguiente, cuando aún no has escrito la lista en ⚙️.</p>
+    <p class="peq">Verde: trabajaste de día · Azul oscuro: trabajaste de noche · Azul claro: descanso · Naranja: incapacidad. Fondo amarillo: domingo · Fondo rosado: festivo. Tus marcas quedan <strong>guardadas en este celular</strong>. Con el botón <strong>🎉 Festivo</strong> marcas o quitas los festivos de cualquier año tocando el día: sirve para ajustar los festivos de cualquier año.</p>
     <div id="ci-aviso"></div>
     <div class="ci-resultado">
       <div>💰 LO QUE TE DEBE LLEGAR</div>
@@ -172,7 +173,7 @@ details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointe
     <p class="peq">El reporte explica la cuenta completa: días, horas, recargos con sus porcentajes, auxilio y descuentos, día por día. Sirve de <strong>sustento si tienes que reclamar</strong> tu pago.</p>
     <details id="ci-detalle-wrap"><summary>Ver aquí el detalle día por día (el sustento de la cuenta)</summary><div id="ci-detalle-dias" style="font-size:13.5px;line-height:1.6;margin-top:8px"></div></details>
     <p class="peq" style="margin-top:12px"><strong>¿Cómo lo calcula por dentro?</strong> Tu sueldo sale de los días que marcaste como trabajados + descansos. Las horas se revisan una por una con el reloj: lo de noche lleva su recargo, lo de domingo o festivo el suyo, y cuando en una semana (lunes a domingo) pasas la jornada máxima legal de esa fecha, las horas que sobran se pagan como <strong>extras</strong>. La incapacidad por enfermedad se paga en parte (con piso del salario mínimo diario) y la de ARL al 100%. Al final descuenta <strong>salud (EPS) y pensión</strong>. Si un mes todavía no tiene los valores oficiales cargados, te avisa y no inventa nada.</p>
-    <p class="peq">Esta es la <strong>cuenta rápida para cualquier trabajador</strong>. Si cambia el año, no necesitas otra aplicación: abajo, en <strong>⚙️ Valores por año</strong>, escribes el salario mínimo y el auxilio nuevos que publique el Gobierno y la calculadora sigue funcionando.</p>
+    <p class="peq">Esta es la <strong>cuenta rápida para cualquier trabajador</strong>. Si cambia el año, no necesitas otra aplicación: nosotros actualizamos esta página con el salario mínimo y el auxilio nuevos que publique el Gobierno, y la calculadora sigue funcionando.</p>
   </div>
 </section>
 
@@ -220,7 +221,7 @@ details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointe
   <div id="cfg-msg"></div>
 </div>
 
-<p class="peq" style="text-align:center">Hecha para verificar tu pago. Si tu cuenta no coincide con la de tu empresa, revisa primero los valores del año en ⚙️ y las horas de tus turnos.</p>
+<p class="peq" style="text-align:center">Hecha para verificar tu pago. Si tu cuenta no coincide con la de tu empresa, revisa primero las horas de tus turnos y las marcas del calendario.</p>
 </main>
 <script>
 "use strict";
@@ -291,9 +292,9 @@ function paramSimple(iso){
 }
 function bloqueoSimple(iso){
   const anio=Number(iso.slice(0,4));const c=CFG[anio];
-  if(!c)return{bloqueado:true,motivo:"Todavía no hay valores cargados para el año "+anio+": prepáralo abajo en «⚙️ Valores por año»."};
-  if(!(Number(c.smmlv)>0))return{bloqueado:true,motivo:"El año "+anio+" aún no tiene el salario mínimo escrito. Cuando el Gobierno lo publique, escríbelo abajo en «⚙️ Valores por año» y esta cuenta queda exacta (por ahora es una estimación)."};
-  if(!paramSimple(iso))return{bloqueado:true,motivo:"La fecha "+iso+" no está cubierta por ningún tramo de valores de su año. Revísalo abajo en «⚙️ Valores por año»."};
+  if(!c)return{bloqueado:true,motivo:"Todavía no hay valores cargados para el año "+anio+": en cuanto el Gobierno los publique, actualizaremos esta página."};
+  if(!(Number(c.smmlv)>0))return{bloqueado:true,motivo:"El año "+anio+" aún no tiene el salario mínimo publicado. Cuando el Gobierno lo publique, actualizaremos esta página y esta cuenta quedará exacta (por ahora es una estimación)."};
+  if(!paramSimple(iso))return{bloqueado:true,motivo:"La fecha "+iso+" no está cubierta por los valores cargados de su año en esta página."};
   return{bloqueado:false,motivo:""};
 }
 function esFestivoTabla(iso){
@@ -629,12 +630,12 @@ function construirReporteExcel(){
   (pRef?fila("Salario mínimo del año",dinero(pRef.smmlv))+fila("Auxilio de transporte del año",dinero(pRef.auxilio))+
    fila("Jornada máxima semanal",pRef.jornadaMaxima+" horas (divisor mensual "+pRef.divisor+")")+
    fila("La noche empieza a las",pRef.nocheDesde+":00")+
-   fila("Recargo nocturno",pRef.recargoNocturno+"%")+fila("Recargo dominical/festivo","según la fecha: mira los tramos en ⚙️ Valores por año")+
+   fila("Recargo nocturno",pRef.recargoNocturno+"%")+fila("Recargo dominical/festivo","según la fecha (la ley lo cambia a mitad de año)")+
    fila("Hora extra de día / de noche",pRef.extraDiurna+"% / "+pRef.extraNocturna+"%")+
    fila("Descuento de salud / pensión del trabajador",pRef.saludTrabajador+"% / "+pRef.pensionTrabajador+"%")
   :fila("Parámetros","Sin parámetros para este período."))+
   '</table>'+
-  '<p>Reporte generado con la Calculadora de Nómina Sencilla, con los valores de ley cargados en la aplicación (sección ⚙️ Valores por año). Las horas se clasifican minuto a minuto según el turno marcado, la jornada máxima de cada semana y los domingos y festivos del calendario.</p>'+
+  '<p>Reporte generado con la Calculadora de Nómina Sencilla, con los valores de ley cargados en la aplicación (valores oficiales cargados en esta página). Las horas se clasifican minuto a minuto según el turno marcado, la jornada máxima de cada semana y los domingos y festivos del calendario.</p>'+
   '</body></html>';
   return html;
 }
