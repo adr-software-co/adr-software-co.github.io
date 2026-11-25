@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="theme-color" content="#123c2b">
+<title>Calculadora de Nómina Colombia — Gratis | ADR Software</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23123c2b'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle' fill='white'%3E%24%3C/text%3E%3C/svg%3E">
+<style>
+/* ===== Estilos (base conservada del proyecto existente) ===== */
+:root{--verde:#123c2b;--verde2:#1b6a4a;--fondo:#f1f6f3;--borde:#c3d5cb;--ok:#137547;--mal:#b42318;--aviso:#8a5a00;--fondo-aviso:#fff3cd;--gris:#5b6b62}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--fondo);color:#12211a;font-size:16px}
+header{background:var(--verde);color:#fff;padding:12px 16px 4px;position:sticky;top:0;z-index:20}
+header h1{margin:0;font-size:20px}
+header p{margin:2px 0 0;font-size:13px;opacity:.85}
+nav{display:flex;gap:6px;flex-wrap:wrap;padding:10px 0 8px}
+nav button{flex:1 1 auto;padding:10px 6px;border:1px solid #fff;background:#fff;color:var(--verde);border-radius:10px;font-size:13.5px;font-weight:600;cursor:pointer;min-width:104px}
+nav button.activo{background:#ffc94d;color:#12211a;border-color:#ffc94d}
+nav button .etapa{display:block;font-size:10.5px;font-weight:700;opacity:.75}
+main{max-width:980px;margin:0 auto;padding:14px}
+section.vista{display:none}section.vista.activa{display:block}
+.tarjeta{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:14px;margin-bottom:14px}
+.tarjeta h2{margin:0 0 10px;font-size:18px;color:var(--verde)}
+.tarjeta h3{margin:14px 0 6px;font-size:16px;color:var(--verde)}
+label{display:block;font-size:14px;margin:10px 0 4px;font-weight:600}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--borde);border-radius:8px;font-size:16px;background:#fff;color:#12211a}
+textarea{min-height:80px}
+.fila{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fila3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:640px){.fila,.fila3{grid-template-columns:1fr}}
+button.accion{background:var(--verde2);color:#fff;border:none;border-radius:10px;padding:12px 16px;font-size:15px;cursor:pointer;width:100%;margin-top:12px}
+button.secundario{background:#fff;color:var(--verde);border:1px solid var(--verde);border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer;margin-top:8px}
+button.peligro{background:#fff;color:var(--mal);border:1px solid var(--mal);border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:7px 6px;border-bottom:1px solid #e0eae4;text-align:left;vertical-align:top}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.etiqueta{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;font-weight:700;background:#e2efe7;color:var(--verde)}
+.etiqueta.pendiente{background:var(--fondo-aviso);color:var(--aviso)}
+.etiqueta.verificado{background:#d9f2e3;color:var(--ok)}
+.aviso{background:var(--fondo-aviso);border:1px solid #ecd28a;border-radius:10px;padding:10px;font-size:14px;margin:10px 0}
+.error{background:#fdeceb;border:1px solid #f2b8b2;border-radius:10px;padding:10px;font-size:14px;margin:10px 0}
+.okcaja{background:#e7f6ee;border:1px solid #a9dcc0;border-radius:10px;padding:10px;font-size:14px;margin:10px 0}
+.peq{font-size:13px;color:var(--gris)}
+.pendiente-caja{border:2px dashed var(--borde);border-radius:12px;padding:18px;text-align:center;color:var(--gris)}
+.cal-cab{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.cal-cab div{text-align:center;font-weight:700;font-size:.78rem;color:var(--verde)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dia{min-height:66px;border:1px solid var(--borde);border-radius:9px;padding:4px 5px;font-size:.72rem;background:#fff;cursor:pointer;text-align:left;line-height:1.35}
+.cal-dia .num{font-weight:700;font-size:.85rem}
+.cal-dia.domingo{background:#fdf6e3}
+.cal-dia.festivo{background:#fdeeee}
+.cal-dia.vacio{opacity:.3;cursor:default}
+.cal-dia.sel{outline:3px solid var(--verde2);outline-offset:-1px}
+.cal-dia.sin-registro{color:var(--gris)}
+.cal-dia.marcado-trabajado{background:#e6f4ea;border-color:#7fb98e}
+.cal-dia.marcado-descanso{background:#e8edf5;border-color:#9db2cc}
+.cal-dia.marcado-incapacidad{background:#fde8e0;border-color:#e0a08a}
+.cal-dia.marcado-noche{background:#dfe6f5;border-color:#5b74a8}
+.rapido-botones{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+@media(max-width:640px){.rapido-botones{grid-template-columns:repeat(2,1fr)}}
+.rapido-btn{padding:14px 8px;border:2px solid var(--borde);border-radius:12px;background:#fff;font-size:15px;font-weight:700;cursor:pointer;color:#12211a}
+.rapido-btn.activo{border-color:var(--verde);background:#ffc94d}
+.rapido-btn[data-modo-rapido="trabajado"].activo{background:#bfe6c8}
+.rapido-btn[data-modo-rapido="descanso"].activo{background:#ccd9ec}
+.rapido-btn[data-modo-rapido="incapacidad_general"].activo,.rapido-btn[data-modo-rapido="incapacidad_arl"].activo{background:#f6c9b8}
+.rapido-btn[data-modo-rapido="borrar"].activo{background:#f2b8b2}
+.ci-pregunta{font-size:19px;font-weight:800;color:var(--verde);margin:18px 0 8px}
+.ci-botones{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ci-boton{padding:18px 10px;border:2px solid var(--borde);border-radius:14px;background:#fff;font-size:18px;font-weight:800;cursor:pointer;color:#12211a}
+.ci-boton.activo{background:#ffc94d;border-color:var(--verde)}
+.ci-paso{display:flex;align-items:center;gap:10px;margin:10px 0}
+.ci-paso button{width:56px;height:56px;flex:0 0 56px;border-radius:50%;border:2px solid var(--verde);background:#fff;color:var(--verde);font-size:28px;font-weight:800;cursor:pointer}
+.ci-paso .ci-valor{flex:1;text-align:center;font-size:22px;font-weight:800}
+.ci-paso .ci-valor small{display:block;font-size:13px;font-weight:600;color:var(--gris)}
+.ci-resultado{position:sticky;bottom:8px;background:var(--verde);color:#fff;border-radius:14px;padding:16px;text-align:center;margin-top:16px;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:5}
+.ci-resultado .ci-neto{font-size:36px;font-weight:800;line-height:1.15}
+input.ci-salario{font-size:24px;font-weight:800;text-align:center;padding:14px}
+.pto{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.pto.pendiente{background:#e0a800}.pto.revisado{background:#0d6efd}.pto.confirmado{background:#198754}
+.mini-nav{display:flex;gap:8px;align-items:end;flex-wrap:wrap}
+.mini-nav button{width:auto;margin:6px 0;padding:10px 14px}
+.dias-sem{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0}
+.dias-sem label{font-weight:400;display:flex;gap:4px;align-items:center;margin:0}
+.dias-sem input{width:auto}
+.perfil-carta{border:1px solid var(--borde);border-radius:10px;padding:12px;margin-bottom:10px}
+.perfil-carta .acciones{display:flex;gap:8px;flex-wrap:wrap}
+.perfil-carta .acciones button{flex:1;margin-top:8px}
+details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointer}
+.scroll-x{overflow-x:auto}
+</style>
+
+<style>
+  .adr-barra{background:#0d1526;color:#e8edf5;padding:14px 18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;border-bottom:3px solid #2563eb}
+  .adr-marca{font-size:22px;font-weight:800;letter-spacing:.5px}
+  .adr-marca span{color:#60a5fa}
+  .adr-lema{font-size:14px;color:#9fb4d8;width:100%}
+  .adr-wa{display:inline-block;background:#22c55e;color:#fff!important;font-weight:700;padding:9px 16px;border-radius:999px;text-decoration:none;font-size:15px}
+  .adr-pie{background:#0d1526;color:#9fb4d8;padding:20px 18px 86px;font-size:14px;line-height:1.6;text-align:center;border-top:3px solid #2563eb;margin-top:26px}
+  .adr-pie a{color:#60a5fa}
+  .adr-flotante{position:fixed;right:16px;bottom:16px;z-index:999;background:#22c55e;color:#fff!important;font-weight:700;padding:13px 20px;border-radius:999px;text-decoration:none;font-size:16px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+</style>
+</head>
+<body>
+<div class="adr-barra">
+  <div class="adr-marca">ADR <span>SOFTWARE</span></div>
+  <a class="adr-wa" href="https://wa.me/573008844143?text=Hola%20ADR%20Software%2C%20vi%20su%20Calculadora%20de%20N%C3%B3mina%20y%20quiero%20informaci%C3%B3n%20de%20sus%20aplicaciones." target="_blank" rel="noopener">📲 Escríbenos por WhatsApp</a>
+  <div class="adr-lema">Aplicaciones y software a medida para tu negocio · Esta calculadora es gratuita</div>
+</div>
+<!-- ============================================================
+     Calculadora de Nómina Sencilla (proyecto independiente)
+     Una sola página: marcas tus días y calcula todo por ley.
+     Los valores de cada año (salario mínimo, auxilio, recargos,
+     festivos) se pueden escribir en la tarjeta ⚙️ Valores por año.
+     Un solo archivo, sin servidor. Los datos se guardan SOLO en
+     este dispositivo (localStorage, clave propia).
+     ============================================================ -->
+<header>
+  <h1>🧮 Calculadora de Nómina Sencilla</h1>
+  <p>Solo marca tus días: ella calcula tu quincena o tu mes por ley. Gratis, sin registro.</p>
+</header>
+<main>
+<section id="vista-inicio" class="vista activa">
+  <div class="tarjeta">
+    <h2>🧮 Tu nómina, fácil: solo marca tus días</h2>
+    <p style="font-size:17px">Sin perfiles y sin formularios. Escribes tu salario <strong>una vez</strong>, marcas en el calendario los días que trabajaste y la aplicación calcula <strong>todo por ley</strong>: noches, dominicales, extras, auxilio, salud y pensión.</p>
+    <div class="ci-pregunta">1️⃣ ¿Cuánto ganas al mes?</div>
+    <label for="ci-salario" style="margin-top:0">Salario de un mes completo, en pesos</label>
+    <input id="ci-salario" class="ci-salario" type="number" min="0" step="1000" inputmode="numeric" placeholder="Ej.: 1750905">
+    <button class="secundario" id="btn-ci-minimo" style="width:100%">No sé / gano el mínimo: poner el salario mínimo de este año</button>
+    <div class="ci-pregunta">2️⃣ ¿Qué pago quieres calcular?</div>
+    <div class="ci-botones" style="grid-template-columns:1fr 1fr 1fr">
+      <button type="button" class="ci-boton activo" data-ci-periodo="q1">💵 QUINCENA 1<br><small style="font-weight:600">días 1 al 15</small></button>
+      <button type="button" class="ci-boton" data-ci-periodo="q2">💵 QUINCENA 2<br><small style="font-weight:600">día 16 a fin de mes</small></button>
+      <button type="button" class="ci-boton" data-ci-periodo="mes">🗓️ MES<br><small style="font-weight:600">mes completo</small></button>
+    </div>
+    <div class="mini-nav">
+      <button class="secundario" id="btn-ci-mes-antes">← Mes anterior</button>
+      <button class="secundario" id="btn-ci-mes-sig">Mes siguiente →</button>
+      <strong id="ci-titulo-mes"></strong>
+    </div>
+    <input id="ci-mes" type="month" style="display:none">
+    <div class="ci-pregunta">3️⃣ Toca una marca y después toca los días</div>
+    <div class="rapido-botones">
+      <button type="button" class="rapido-btn activo" data-ci-modo="trabajo_dia">☀️ Trabajé de DÍA</button>
+      <button type="button" class="rapido-btn" data-ci-modo="trabajo_noche">🌙 Trabajé de NOCHE</button>
+      <button type="button" class="rapido-btn" data-ci-modo="descanso">😴 Descanso</button>
+      <button type="button" class="rapido-btn" data-ci-modo="incapacidad_general">🏥 Incapacidad (enfermedad)</button>
+      <button type="button" class="rapido-btn" data-ci-modo="incapacidad_arl">🚑 Incapacidad ARL (accidente de trabajo)</button>
+      <button type="button" class="rapido-btn" data-ci-modo="festivo">🎉 Festivo (marcar / quitar)</button>
+      <button type="button" class="rapido-btn" data-ci-modo="borrar">🗑️ Borrar día</button>
+    </div>
+    <div class="fila">
+      <div><label for="ci-turno-dia-i">Turno de DÍA: entra a las</label><input id="ci-turno-dia-i" type="time" value="06:00"></div>
+      <div><label for="ci-turno-dia-f">y sale a las</label><input id="ci-turno-dia-f" type="time" value="18:00"></div>
+      <div><label for="ci-turno-noche-i">Turno de NOCHE: entra a las</label><input id="ci-turno-noche-i" type="time" value="18:00"></div>
+      <div><label for="ci-turno-noche-f">y sale a las (día siguiente)</label><input id="ci-turno-noche-f" type="time" value="06:00"></div>
+    </div>
+    <p class="peq">Pon <strong>una sola vez</strong> las horas de tus turnos. Después solo tocas días: cada día marcado queda con esas horas y la aplicación sola saca qué es ordinario, qué es extra, qué es noche y qué es dominical. Si tocas de nuevo un día con la misma marca, se quita.</p>
+    <div id="ci-modo-estado" class="okcaja">Marca actual: <strong>Trabajé de DÍA</strong>. Toca los días del calendario.</div>
+    <div class="cal-cab"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
+    <div class="cal-grid" id="ci-grid"></div>
+    <p class="peq">Verde: trabajaste de día · Azul oscuro: trabajaste de noche · Azul claro: descanso · Naranja: incapacidad. Fondo amarillo: domingo · Fondo rosado: festivo. Tus marcas quedan <strong>guardadas en este celular</strong>. Con el botón <strong>🎉 Festivo</strong> marcas o quitas los festivos de cualquier año tocando el día: sirve para el año siguiente, cuando aún no has escrito la lista en ⚙️.</p>
+    <div id="ci-aviso"></div>
+    <div class="ci-resultado">
+      <div>💰 LO QUE TE DEBE LLEGAR</div>
+      <div class="ci-neto" id="ci-neto">$0</div>
+      <div id="ci-resultado-detalle" style="font-size:14px;text-align:left;margin-top:8px"></div>
+    </div>
+    <button type="button" class="accion" id="btn-reporte">📊 Descargar el reporte en Excel (el porqué de este sueldo)</button>
+    <p class="peq">El reporte explica la cuenta completa: días, horas, recargos con sus porcentajes, auxilio y descuentos, día por día. Sirve de <strong>sustento si tienes que reclamar</strong> tu pago.</p>
+    <details id="ci-detalle-wrap"><summary>Ver aquí el detalle día por día (el sustento de la cuenta)</summary><div id="ci-detalle-dias" style="font-size:13.5px;line-height:1.6;margin-top:8px"></div></details>
+    <p class="peq" style="margin-top:12px"><strong>¿Cómo lo calcula por dentro?</strong> Tu sueldo sale de los días que marcaste como trabajados + descansos. Las horas se revisan una por una con el reloj: lo de noche lleva su recargo, lo de domingo o festivo el suyo, y cuando en una semana (lunes a domingo) pasas la jornada máxima legal de esa fecha, las horas que sobran se pagan como <strong>extras</strong>. La incapacidad por enfermedad se paga en parte (con piso del salario mínimo diario) y la de ARL al 100%. Al final descuenta <strong>salud (EPS) y pensión</strong>. Si un mes todavía no tiene los valores oficiales cargados, te avisa y no inventa nada.</p>
+    <p class="peq">Esta es la <strong>cuenta rápida para cualquier trabajador</strong>. Si cambia el año, no necesitas otra aplicación: abajo, en <strong>⚙️ Valores por año</strong>, escribes el salario mínimo y el auxilio nuevos que publique el Gobierno y la calculadora sigue funcionando.</p>
+  </div>
+</section>
+
+<div class="tarjeta" id="cfg-tarjeta">
+  <h2>⚙️ Valores por año (lo que cambia el Gobierno)</h2>
+  <p>Cada año el Gobierno publica el <strong>salario mínimo</strong> y el <strong>auxilio de transporte</strong> nuevos. Cuando eso pase, escríbelos aquí <strong>una sola vez</strong> y la calculadora ya hace las cuentas del año nuevo. También puedes corregir los días festivos y, si una ley cambia algo a mitad de año, agregar ese cambio. Todo queda guardado en este celular.</p>
+  <label for="cfg-anio">Año que quieres ver o corregir</label>
+  <select id="cfg-anio"></select>
+  <button type="button" class="secundario" id="btn-cfg-nuevo" style="width:100%">➕ Preparar el año siguiente</button>
+  <div id="cfg-aviso-anio"></div>
+  <div class="fila">
+    <div><label for="cfg-smmlv">Salario mínimo de este año ($)</label><input id="cfg-smmlv" type="number" min="0" step="1000" inputmode="numeric" placeholder="Ej.: 1750905"></div>
+    <div><label for="cfg-auxilio">Auxilio de transporte de este año ($)</label><input id="cfg-auxilio" type="number" min="0" step="1000" inputmode="numeric" placeholder="Ej.: 249095"></div>
+  </div>
+  <h3>Tramos del año (si algo cambia a mitad de año)</h3>
+  <p class="peq">Casi todos los años tienen un solo tramo. Si el Gobierno cambia la jornada o el recargo dominical a mitad de año, aquí quedan dos o más tramos. Puedes corregir las fechas y los valores de cada tramo.</p>
+  <div id="cfg-tramos"></div>
+  <button type="button" class="secundario" id="btn-cfg-split" style="width:100%">➕ Agregar un cambio a mitad de año</button>
+  <div id="cfg-split" style="display:none">
+    <div class="fila">
+      <div><label for="cfg-split-desde">El cambio empieza el día</label><input id="cfg-split-desde" type="date"></div>
+      <div><label for="cfg-split-jornada">Jornada máxima desde ese día (horas por semana)</label><input id="cfg-split-jornada" type="number" min="1" max="60" step="1" placeholder="Igual que antes"></div>
+      <div><label for="cfg-split-dom">Recargo dominical/festivo desde ese día (%)</label><input id="cfg-split-dom" type="number" min="0" max="200" step="1" placeholder="Igual que antes"></div>
+      <div><label for="cfg-split-noche">La noche empieza a las (hora 0–24)</label><input id="cfg-split-noche" type="number" min="0" max="24" step="1" placeholder="Igual que antes"></div>
+    </div>
+    <button type="button" class="accion" id="btn-cfg-split-ok">Aplicar el cambio</button>
+  </div>
+  <details>
+    <summary>Porcentajes que casi nunca cambian (tócalos solo si una ley los cambia)</summary>
+    <div class="fila">
+      <div><label for="cfg-p-nocturno">Recargo nocturno (%)</label><input id="cfg-p-nocturno" type="number" step="0.01"></div>
+      <div><label for="cfg-p-extrad">Hora extra de día (%)</label><input id="cfg-p-extrad" type="number" step="0.01"></div>
+      <div><label for="cfg-p-extran">Hora extra de noche (%)</label><input id="cfg-p-extran" type="number" step="0.01"></div>
+      <div><label for="cfg-p-incap1">Incapacidad enfermedad días 1–90 (% del salario)</label><input id="cfg-p-incap1" type="number" step="0.01"></div>
+      <div><label for="cfg-p-incap2">Incapacidad enfermedad días 91–180 (%)</label><input id="cfg-p-incap2" type="number" step="0.01"></div>
+      <div><label for="cfg-p-incaparl">Incapacidad ARL (%)</label><input id="cfg-p-incaparl" type="number" step="0.01"></div>
+      <div><label for="cfg-p-salud">Descuento de salud del trabajador (%)</label><input id="cfg-p-salud" type="number" step="0.01"></div>
+      <div><label for="cfg-p-pension">Descuento de pensión del trabajador (%)</label><input id="cfg-p-pension" type="number" step="0.01"></div>
+    </div>
+  </details>
+  <label for="cfg-festivos">Días festivos de este año — una fecha por línea, así: 2027-01-01</label>
+  <textarea id="cfg-festivos" placeholder="2027-01-01&#10;2027-01-11&#10;..."></textarea>
+  <p class="peq">Los festivos salen cada año en el calendario oficial. Escríbelos aquí y el calendario los pinta de rosado y paga su recargo. También puedes marcarlos o quitarlos tocando los días en el calendario con el botón 🎉 Festivo.</p>
+  <button type="button" class="accion" id="btn-cfg-guardar">💾 Guardar estos valores</button>
+  <div id="cfg-msg"></div>
+</div>
+
+<p class="peq" style="text-align:center">Hecha para verificar tu pago. Si tu cuenta no coincide con la de tu empresa, revisa primero los valores del año en ⚙️ y las horas de tus turnos.</p>
+</main>
+<script>
+"use strict";
+
+/* ============================================================
+   Utilidades (copia mínima del proyecto grande)
+   ============================================================ */
+const $=s=>document.querySelector(s);
+function dinero(n){return "$"+Math.round(Number(n)||0).toLocaleString("es-CO");}
+function escapar(t){return String(t==null?"":t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+const NOMBRES_MES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+function pad2(n){return String(n).padStart(2,"0");}
+function isoDe(anio,mes,dia){return anio+"-"+pad2(mes)+"-"+pad2(dia);}
+function diasEnMes(anio,mes){return new Date(anio,mes,0).getDate();}
+function sumarDias(iso,n){const f=new Date(iso+"T12:00:00");f.setDate(f.getDate()+n);return f.getFullYear()+"-"+String(f.getMonth()+1).padStart(2,"0")+"-"+String(f.getDate()).padStart(2,"0");}
+function diaSemanaDe(iso){return new Date(iso+"T12:00:00").getDay();}
+function esDomingoISO(iso){return diaSemanaDe(iso)===0;}
+function lunesDeSemana(iso){return sumarDias(iso,-((diaSemanaDe(iso)+6)%7));}
+const CUBETAS=["OD","ON","ODD","ODN","ED","EN","EDD","EDN"];
+function cubetasEnCero(){const o={};CUBETAS.forEach(k=>{o[k]=0;});return o;}
+function totalCubetas(c){return CUBETAS.reduce((s,k)=>s+c[k],0);}
+
+/* ============================================================
+   VALORES POR AÑO (editables por el usuario)
+   Lo que el Gobierno cambia: salario mínimo y auxilio cada año;
+   a veces a mitad de año cambian la jornada o el recargo
+   dominical: eso se guarda por TRAMOS (desde/hasta). Precargado:
+   2025 y 2026 con los valores oficiales verificados del proyecto
+   grande; 2027 con la jornada y el dominical que ya fijó la
+   Ley 2466 de 2025, pero SIN salario mínimo: lo escribe el
+   usuario cuando el Gobierno lo publique (diciembre de 2026).
+   ============================================================ */
+const FESTIVOS_2025=["2025-01-01","2025-01-06","2025-03-24","2025-04-17","2025-04-18","2025-05-01","2025-06-02","2025-06-23","2025-06-30","2025-07-20","2025-08-07","2025-08-18","2025-10-13","2025-11-03","2025-11-17","2025-12-08","2025-12-25"];
+const FESTIVOS_2026=["2026-01-01","2026-01-12","2026-03-23","2026-04-02","2026-04-03","2026-05-01","2026-05-18","2026-06-08","2026-06-15","2026-06-29","2026-07-20","2026-08-07","2026-08-17","2026-10-12","2026-11-02","2026-11-16","2026-12-08","2026-12-25"];
+function cfgAnioBase(smmlv,auxilio,tramos,festivos){
+  return {smmlv:smmlv,auxilio:auxilio,recargoNocturno:35,extraDiurna:25,extraNocturna:75,
+    incap1a90:66.67,incap91a180:50,incapARL:100,salud:4,pension:4,tramos:tramos,festivos:festivos};
+}
+function CFG_DEFECTO(){
+  return {
+    2025:cfgAnioBase(1423500,200000,[
+      {desde:"2025-01-01",hasta:"2025-06-30",jornada:46,nocheDesde:21,dominical:75},
+      {desde:"2025-07-01",hasta:"2025-07-14",jornada:46,nocheDesde:21,dominical:80},
+      {desde:"2025-07-15",hasta:"2025-12-24",jornada:44,nocheDesde:21,dominical:80},
+      {desde:"2025-12-25",hasta:"2025-12-31",jornada:44,nocheDesde:19,dominical:80}],FESTIVOS_2025),
+    2026:cfgAnioBase(1750905,249095,[
+      {desde:"2026-01-01",hasta:"2026-06-30",jornada:44,nocheDesde:19,dominical:80},
+      {desde:"2026-07-01",hasta:"2026-07-14",jornada:44,nocheDesde:19,dominical:90},
+      {desde:"2026-07-15",hasta:"2026-12-31",jornada:42,nocheDesde:19,dominical:90}],FESTIVOS_2026),
+    2027:cfgAnioBase(0,0,[
+      {desde:"2027-01-01",hasta:"2027-06-30",jornada:42,nocheDesde:19,dominical:90},
+      {desde:"2027-07-01",hasta:"2027-12-31",jornada:42,nocheDesde:19,dominical:100}],[])
+  };
+}
+let CFG=CFG_DEFECTO();
+/* La vigencia (tramo) que cubre una fecha, con todos los valores
+   que el motor necesita. null si el año no está o la fecha no
+   está cubierta por ningún tramo. */
+function paramSimple(iso){
+  const c=CFG[Number(iso.slice(0,4))];if(!c||!Array.isArray(c.tramos))return null;
+  const t=c.tramos.find(t=>iso>=t.desde&&(!t.hasta||iso<=t.hasta));if(!t)return null;
+  return {smmlv:Number(c.smmlv)||0,auxilio:Number(c.auxilio)||0,
+    jornadaMaxima:Number(t.jornada)||42,divisor:Math.round((Number(t.jornada)||42)/6*30),
+    nocheDesde:Number(t.nocheDesde)||19,recargoDominical:Number(t.dominical)||0,
+    recargoNocturno:Number(c.recargoNocturno)||0,extraDiurna:Number(c.extraDiurna)||0,extraNocturna:Number(c.extraNocturna)||0,
+    incapGeneral1a90:Number(c.incap1a90)||0,incapGeneral91a180:Number(c.incap91a180)||0,incapARL:Number(c.incapARL)||0,
+    saludTrabajador:Number(c.salud)||0,pensionTrabajador:Number(c.pension)||0};
+}
+function bloqueoSimple(iso){
+  const anio=Number(iso.slice(0,4));const c=CFG[anio];
+  if(!c)return{bloqueado:true,motivo:"Todavía no hay valores cargados para el año "+anio+": prepáralo abajo en «⚙️ Valores por año»."};
+  if(!(Number(c.smmlv)>0))return{bloqueado:true,motivo:"El año "+anio+" aún no tiene el salario mínimo escrito. Cuando el Gobierno lo publique, escríbelo abajo en «⚙️ Valores por año» y esta cuenta queda exacta (por ahora es una estimación)."};
+  if(!paramSimple(iso))return{bloqueado:true,motivo:"La fecha "+iso+" no está cubierta por ningún tramo de valores de su año. Revísalo abajo en «⚙️ Valores por año»."};
+  return{bloqueado:false,motivo:""};
+}
+function esFestivoTabla(iso){
+  /* Lo tocado a mano en el calendario manda sobre la lista de ⚙️:
+     festivosExtra = marcados por el usuario; festivosFuera =
+     festivos de la lista que el usuario quitó tocando el día. */
+  if(typeof cs!=="undefined"&&cs){
+    if(cs.festivosFuera&&cs.festivosFuera[iso])return false;
+    if(cs.festivosExtra&&cs.festivosExtra[iso])return true;
+  }
+  const c=CFG[Number(iso.slice(0,4))];
+  return !!(c&&Array.isArray(c.festivos)&&c.festivos.indexOf(iso)>=0);
+}
+
+
+/* ============================================================
+   CALCULADORA INMEDIATA (extraída del Bloque 13 del proyecto
+   grande, con los parámetros apuntando a los valores editables
+   por año de esta misma aplicación: paramSimple/bloqueoSimple)
+   ============================================================ */
+const CLAVE_SIMPLE="calculadora_nomina_sencilla_v1";
+const NOMBRES_MARCA_SIMPLE={trabajo_dia:"Trabajé de DÍA",trabajo_noche:"Trabajé de NOCHE",descanso:"Descanso",incapacidad_general:"Incapacidad (enfermedad)",incapacidad_arl:"Incapacidad ARL",festivo:"Festivo 🎉 (toca un día para marcarlo o quitarlo como festivo)",borrar:"Borrar día"};
+let cs={salario:0,turnoDia:{i:"06:00",f:"18:00"},turnoNoche:{i:"18:00",f:"06:00"},marcas:{},festivosExtra:{},festivosFuera:{}};
+let ciPeriodo="q1",ciModo="trabajo_dia",ciAnio=0,ciMesNum=0,ciUltimoResultado=null;
+(function(){
+  const hoy=new Date();ciAnio=hoy.getFullYear();ciMesNum=hoy.getMonth()+1;
+  ciPeriodo=hoy.getDate()<=15?"q1":"q2";
+  try{
+    const crudo=localStorage.getItem(CLAVE_SIMPLE);
+    if(crudo){const d=JSON.parse(crudo);if(d&&typeof d==="object"){if(d.salario)cs.salario=Number(d.salario)||0;if(d.turnoDia)cs.turnoDia=d.turnoDia;if(d.turnoNoche)cs.turnoNoche=d.turnoNoche;if(d.marcas)cs.marcas=d.marcas;if(d.festivosExtra)cs.festivosExtra=d.festivosExtra;if(d.festivosFuera)cs.festivosFuera=d.festivosFuera;if(d.cfg&&typeof d.cfg==="object")CFG=d.cfg;}}
+  }catch(err){/* almacenamiento no disponible: la calculadora funciona igual, solo no recuerda entre visitas */}
+})();
+function csGuardar(){try{localStorage.setItem(CLAVE_SIMPLE,JSON.stringify({salario:cs.salario,turnoDia:cs.turnoDia,turnoNoche:cs.turnoNoche,marcas:cs.marcas,festivosExtra:cs.festivosExtra,festivosFuera:cs.festivosFuera,cfg:CFG}));}catch(err){}}
+function ciRango(){
+  if(ciPeriodo==="q1")return{desde:isoDe(ciAnio,ciMesNum,1),hasta:isoDe(ciAnio,ciMesNum,15)};
+  if(ciPeriodo==="q2")return{desde:isoDe(ciAnio,ciMesNum,16),hasta:isoDe(ciAnio,ciMesNum,diasEnMes(ciAnio,ciMesNum))};
+  return{desde:isoDe(ciAnio,ciMesNum,1),hasta:isoDe(ciAnio,ciMesNum,diasEnMes(ciAnio,ciMesNum))};
+}
+/* Clasifica las horas marcadas como trabajo entre desde y
+   hasta, minuto a minuto (mismo criterio de la Etapa 3, pero
+   sin contrato: el tope semanal es la jornada máxima legal de
+   cada semana). Devuelve minutos por cubeta y por fecha. */
+function ciClasificar(desde,hasta){
+  const dias={};const sinParametros=[];
+  const iniExp=lunesDeSemana(desde),finExp=sumarDias(lunesDeSemana(hasta),6);
+  const fechasTrabajo=Object.keys(cs.marcas).filter(f=>(cs.marcas[f]==="trabajo_dia"||cs.marcas[f]==="trabajo_noche")&&f>=iniExp&&f<=finExp).sort();
+  const cumSemana={};
+  fechasTrabajo.forEach(fecha=>{
+    const marca=cs.marcas[fecha];
+    const turno=marca==="trabajo_noche"?cs.turnoNoche:cs.turnoDia;
+    if(!turno.i||!turno.f)return;
+    const iniD=new Date(fecha+"T"+turno.i+":00");
+    const finD=new Date(fecha+"T"+turno.f+":00");
+    if(finD<=iniD)finD.setDate(finD.getDate()+1);
+    const cursor=new Date(iniD);
+    while(cursor<finD){
+      const f=isoDe(cursor.getFullYear(),cursor.getMonth()+1,cursor.getDate());
+      const p=paramSimple(f);
+      const sem=lunesDeSemana(f);
+      if(cumSemana[sem]===undefined)cumSemana[sem]=0;
+      if(!p){if(f>=desde&&f<=hasta&&sinParametros.indexOf(f)<0)sinParametros.push(f);cursor.setMinutes(cursor.getMinutes()+1);continue;}
+      const tope=(p.jornadaMaxima||44)*60;
+      const extra=cumSemana[sem]>=tope;
+      cumSemana[sem]++;
+      if(f>=desde&&f<=hasta){
+        const minDelDia=cursor.getHours()*60+cursor.getMinutes();
+        const noche=minDelDia>=p.nocheDesde*60||minDelDia<360;
+        const dom=esDomingoISO(f)||esFestivoTabla(f);
+        const clave=(extra?"E":"O")+(dom?"D":"")+(noche?"N":"D");
+        if(!dias[f])dias[f]=cubetasEnCero();
+        dias[f][clave]++;
+      }
+      cursor.setMinutes(cursor.getMinutes()+1);
+    }
+  });
+  const totales=cubetasEnCero();
+  Object.keys(dias).forEach(f=>CUBETAS.forEach(k=>{totales[k]+=dias[f][k];}));
+  return{dias:dias,totales:totales,sinParametros:sinParametros};
+}
+function ciPrecioHoras(salario,desglose){
+  let recargos=0,extras=0;
+  Object.keys(desglose.dias).forEach(f=>{
+    const p=paramSimple(f);if(!p)return;
+    const vh=salario/(p.divisor||220);
+    const rn=(p.recargoNocturno||0)/100,dom=(p.recargoDominical||0)/100,ed=(p.extraDiurna||0)/100,en=(p.extraNocturna||0)/100;
+    const m=desglose.dias[f];
+    recargos+=vh/60*(m.ON*rn+m.ODD*dom+m.ODN*(dom+rn));
+    extras+=vh/60*(m.ED*(1+ed)+m.EN*(1+en)+m.EDD*(1+ed+dom)+m.EDN*(1+en+dom));
+  });
+  return{recargos:recargos,extras:extras};
+}
+function ciOrdinal(fecha,tipo){
+  let ord=1;let f=sumarDias(fecha,-1);
+  while(cs.marcas[f]===tipo){ord++;f=sumarDias(f,-1);}
+  return ord;
+}
+function ciContar(desde,hasta){
+  const c={trabajo:0,descanso:0,incGen:[],incArl:0};
+  for(let f=desde;f<=hasta;f=sumarDias(f,1)){
+    const m=cs.marcas[f];
+    if(m==="trabajo_dia"||m==="trabajo_noche")c.trabajo++;
+    else if(m==="descanso")c.descanso++;
+    else if(m==="incapacidad_general")c.incGen.push(f);
+    else if(m==="incapacidad_arl")c.incArl++;
+  }
+  return c;
+}
+function calcularSimple(){
+  const r=ciRango();
+  const salario=Number($("#ci-salario").value)||0;
+  const pRef=paramSimple(r.desde)||paramSimple(r.hasta);
+  const conteo=ciContar(r.desde,r.hasta);
+  const diasPago=conteo.trabajo+conteo.descanso;
+  const diario=salario/30;
+  const sueldo=diario*diasPago;
+  let pagoIncGen=0;
+  conteo.incGen.forEach(f=>{
+    const p=paramSimple(f);if(!p)return;
+    const ord=ciOrdinal(f,"incapacidad_general");
+    const porc=ord<=90?(Number(p.incapGeneral1a90)||66.67):(ord<=180?(Number(p.incapGeneral91a180)||50):0);
+    if(porc<=0)return;
+    const pisoDiario=(Number(p.smmlv)||0)/30;
+    pagoIncGen+=Math.min(diario,Math.max(diario*porc/100,pisoDiario));
+  });
+  let pagoIncArl=0;
+  for(let f=r.desde;f<=r.hasta;f=sumarDias(f,1)){
+    if(cs.marcas[f]!=="incapacidad_arl")continue;
+    const p=paramSimple(f);
+    pagoIncArl+=diario*((p?Number(p.incapARL)||100:100)/100);
+  }
+  const desglose=ciClasificar(r.desde,r.hasta);
+  const precios=ciPrecioHoras(salario,desglose);
+  const auxilio=(pRef&&pRef.smmlv>0&&salario>0&&salario<=2*pRef.smmlv)?(Number(pRef.auxilio)||0)/30*diasPago:0;
+  const devengado=sueldo+pagoIncGen+pagoIncArl+precios.recargos+precios.extras+auxilio;
+  const ibc=devengado-auxilio;
+  const salud=ibc*((pRef?Number(pRef.saludTrabajador)||4:4)/100);
+  const pension=ibc*((pRef?Number(pRef.pensionTrabajador)||4:4)/100);
+  const fsp=(pRef&&pRef.smmlv>0&&ibc>=4*pRef.smmlv)?ibc*0.01:0;
+  const neto=devengado-salud-pension-fsp;
+  const motivos=[];
+  [r.desde,r.hasta].forEach(f=>{const b=bloqueoSimple(f);if(b.bloqueado&&motivos.indexOf(b.motivo)<0)motivos.push(b.motivo);});
+  if(desglose.sinParametros.length)motivos.push("Hay días de este período sin parámetros legales cargados ("+desglose.sinParametros.join(", ")+"): sus horas no se pudieron pagar en esta cuenta.");
+  const esEstimacion=motivos.length>0;
+  $("#ci-aviso").innerHTML=esEstimacion?'<div class="aviso"><strong>Ojo, es una ESTIMACIÓN:</strong><br>'+motivos.map(m=>escapar(m)).join("<br>")+"</div>":"";
+  $("#ci-neto").textContent=salario>0?dinero(neto):"$0";
+  const linea=(txt,val)=>"<div>"+txt+": <strong>"+dinero(val)+"</strong></div>";
+  const horasClasif=totalCubetas(desglose.totales)/60;
+  $("#ci-resultado-detalle").innerHTML=salario>0?
+    "<div><strong>"+conteo.trabajo+" días trabajados · "+conteo.descanso+" descansos · "+conteo.incGen.length+" incapacidad enfermedad · "+conteo.incArl+" incapacidad ARL</strong></div>"+
+    linea("Sueldo por "+diasPago+" días pagados",sueldo)+
+    (conteo.incGen.length?linea("Incapacidad por enfermedad ("+conteo.incGen.length+" días, pago parcial)",pagoIncGen):"")+
+    (conteo.incArl?linea("Incapacidad ARL ("+conteo.incArl+" días al 100%)",pagoIncArl):"")+
+    (precios.recargos?linea("Recargos de noche y dominicales",precios.recargos):"")+
+    (precios.extras?linea("Horas extras",precios.extras):"")+
+    (auxilio?linea("Auxilio de transporte",auxilio):"")+
+    linea("Te descuentan salud (EPS)",-salud)+
+    linea("Te descuentan pensión",-pension)+
+    (fsp?linea("Fondo de solidaridad (ingresos altos)",-fsp):"")+
+    "<div style='margin-top:6px;opacity:.9'>Pago del "+escapar(r.desde)+" al "+escapar(r.hasta)+" · Horas revisadas por el reloj: "+horasClasif.toFixed(1).replace(".",",")+" h</div>"
+    :"<div>Escribe arriba tu salario del mes, marca tus días en el calendario y el resultado aparece aquí solo. 👆</div>";
+  ciUltimoResultado={desde:r.desde,hasta:r.hasta,trabajo:conteo.trabajo,descanso:conteo.descanso,diasPago:diasPago,sueldo:sueldo,pagoIncGen:pagoIncGen,pagoIncArl:pagoIncArl,recargos:precios.recargos,extras:precios.extras,auxilio:auxilio,devengado:devengado,ibc:ibc,salud:salud,pension:pension,fsp:fsp,neto:neto,esEstimacion:esEstimacion,totalesMin:desglose.totales};
+  return ciUltimoResultado;
+}
+function renderCalendarioSimple(){
+  document.querySelectorAll("[data-ci-periodo]").forEach(x=>x.classList.toggle("activo",x.dataset.ciPeriodo===ciPeriodo));
+  document.querySelectorAll("[data-ci-modo]").forEach(x=>x.classList.toggle("activo",x.dataset.ciModo===ciModo));
+  $("#ci-modo-estado").innerHTML="Marca actual: <strong>"+escapar(NOMBRES_MARCA_SIMPLE[ciModo]||ciModo)+"</strong>. Toca los días del calendario.";
+  $("#ci-mes").value=ciAnio+"-"+pad2(ciMesNum);
+  $("#ci-titulo-mes").textContent=NOMBRES_MES[ciMesNum-1]+" de "+ciAnio;
+  const primero=diaSemanaDe(isoDe(ciAnio,ciMesNum,1));
+  const offset=(primero+6)%7;const total=diasEnMes(ciAnio,ciMesNum);
+  let html="";
+  for(let i=0;i<offset;i++)html+='<div class="cal-dia vacio"></div>';
+  for(let dia=1;dia<=total;dia++){
+    const iso=isoDe(ciAnio,ciMesNum,dia);
+    const m=cs.marcas[iso];
+    const esDom=esDomingoISO(iso),esFes=esFestivoTabla(iso);
+    const clase=m==="trabajo_dia"?" marcado-trabajado":m==="trabajo_noche"?" marcado-noche":m==="descanso"?" marcado-descanso":(m==="incapacidad_general"||m==="incapacidad_arl")?" marcado-incapacidad":"";
+    const etiqueta=m==="trabajo_dia"?"☀️ Trabajé":m==="trabajo_noche"?"🌙 Noche":m==="descanso"?"😴 Descanso":m==="incapacidad_general"?"🏥 Incapacidad":m==="incapacidad_arl"?"🚑 Inc. ARL":"";
+    html+='<div class="cal-dia'+(esDom?" domingo":"")+(esFes?" festivo":"")+clase+(m?"":" sin-registro")+'" data-ci-fecha="'+iso+'"><span class="num">'+dia+"</span>"+
+      (esFes?' <span class="etiqueta pendiente">Festivo</span>':"")+"<br>"+
+      (etiqueta?"<strong>"+etiqueta+"</strong>":"")+
+      "</div>";
+  }
+  const grid=$("#ci-grid");grid.innerHTML=html;
+  grid.querySelectorAll("[data-ci-fecha]").forEach(c=>c.addEventListener("click",()=>ciTocarDia(c.dataset.ciFecha)));
+}
+function ciTocarDia(fecha){
+  if(ciModo==="festivo"){
+    /* Ciclo de toques: marcado a mano -> se quita; festivo de la
+       lista -> se quita (queda en festivosFuera); quitado -> vuelve;
+       día normal -> se marca. */
+    if(cs.festivosExtra[fecha]){delete cs.festivosExtra[fecha];}
+    else if(cs.festivosFuera[fecha]){delete cs.festivosFuera[fecha];}
+    else if(esFestivoTabla(fecha)){cs.festivosFuera[fecha]=true;}
+    else{cs.festivosExtra[fecha]=true;}
+    csGuardar();renderCalendarioSimple();calcularSimple();
+    const p2=fecha.split("-");
+    $("#ci-modo-estado").innerHTML="✓ Día "+Number(p2[2])+" de "+NOMBRES_MES[Number(p2[1])-1]+": ahora "+(esFestivoTabla(fecha)?"<strong>SÍ es festivo 🎉</strong> — si lo trabajas, se paga con recargo.":"<strong>NO es festivo</strong>.")+" Sigue tocando días.";
+    return;
+  }
+  if(ciModo==="borrar"){if(cs.marcas[fecha])delete cs.marcas[fecha];}
+  else if(cs.marcas[fecha]===ciModo){delete cs.marcas[fecha];}
+  else{cs.marcas[fecha]=ciModo;}
+  cs.salario=Number($("#ci-salario").value)||0;
+  csGuardar();
+  const p=fecha.split("-").map(Number);
+  if(p[0]!==ciAnio||p[1]!==ciMesNum){ciAnio=p[0];ciMesNum=p[1];}
+  /* Si el día tocado cae en la OTRA quincena del mes, el período
+     cambia solo a esa quincena: así el toque siempre se ve en el
+     resultado (antes el día se pintaba pero el neto no se movía
+     si la quincena elegida era la contraria). */
+  if(ciPeriodo==="q1"&&p[2]>15)ciPeriodo="q2";
+  else if(ciPeriodo==="q2"&&p[2]<=15)ciPeriodo="q1";
+  renderCalendarioSimple();calcularSimple();
+  const r2=ciRango();
+  $("#ci-modo-estado").innerHTML="✓ Día "+p[2]+": <strong>"+(cs.marcas[fecha]?escapar(NOMBRES_MARCA_SIMPLE[cs.marcas[fecha]]||cs.marcas[fecha]):"sin marca (borrado)")+"</strong> · Estás viendo el pago del "+escapar(r2.desde)+" al "+escapar(r2.hasta)+". El resultado está abajo. Sigue tocando días.";
+}
+function renderCalculadoraSimple(){
+  if(cs.salario>0&&!$("#ci-salario").value)$("#ci-salario").value=cs.salario;
+  $("#ci-turno-dia-i").value=cs.turnoDia.i;$("#ci-turno-dia-f").value=cs.turnoDia.f;
+  $("#ci-turno-noche-i").value=cs.turnoNoche.i;$("#ci-turno-noche-f").value=cs.turnoNoche.f;
+  renderCalendarioSimple();calcularSimple();
+}
+document.querySelectorAll("[data-ci-periodo]").forEach(b=>b.addEventListener("click",()=>{
+  ciPeriodo=b.dataset.ciPeriodo;renderCalendarioSimple();calcularSimple();
+}));
+document.querySelectorAll("[data-ci-modo]").forEach(b=>b.addEventListener("click",()=>{
+  ciModo=b.dataset.ciModo;renderCalendarioSimple();
+}));
+$("#btn-ci-mes-antes").addEventListener("click",()=>{ciMesNum--;if(ciMesNum<1){ciMesNum=12;ciAnio--;}renderCalendarioSimple();calcularSimple();});
+$("#btn-ci-mes-sig").addEventListener("click",()=>{ciMesNum++;if(ciMesNum>12){ciMesNum=1;ciAnio++;}renderCalendarioSimple();calcularSimple();});
+$("#ci-salario").addEventListener("input",()=>{cs.salario=Number($("#ci-salario").value)||0;csGuardar();calcularSimple();});
+[["#ci-turno-dia-i","turnoDia","i"],["#ci-turno-dia-f","turnoDia","f"],["#ci-turno-noche-i","turnoNoche","i"],["#ci-turno-noche-f","turnoNoche","f"]].forEach(cfg=>{
+  $(cfg[0]).addEventListener("change",()=>{cs[cfg[1]][cfg[2]]=$(cfg[0]).value;csGuardar();calcularSimple();});
+});
+$("#btn-ci-minimo").addEventListener("click",()=>{
+  const p=paramSimple(isoDe(ciAnio,ciMesNum,15));
+  if(p&&p.smmlv>0){$("#ci-salario").value=p.smmlv;cs.salario=p.smmlv;csGuardar();calcularSimple();}
+  else alert("Para ese mes todavía no está publicado/cargado el salario mínimo oficial. No se puso ningún valor inventado.");
+});
+
+
+/* ============================================================
+   
+
+
+
+/* ============================================================
+   REPORTE (sustento del sueldo): detalle día por día y archivo
+   de Excel (.xls) con la explicación completa de la cuenta.
+   ============================================================ */
+const NOMBRES_DIA_SEMANA=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+function ciPrecioDia(salario,f,m){
+  const p=paramSimple(f);if(!p||!m)return{recargos:0,extras:0,vh:0};
+  const vh=salario/(p.divisor||220);
+  const rn=(p.recargoNocturno||0)/100,dom=(p.recargoDominical||0)/100,ed=(p.extraDiurna||0)/100,en=(p.extraNocturna||0)/100;
+  return{vh:vh,
+    recargos:vh/60*(m.ON*rn+m.ODD*dom+m.ODN*(dom+rn)),
+    extras:vh/60*(m.ED*(1+ed)+m.EN*(1+en)+m.EDD*(1+ed+dom)+m.EDN*(1+en+dom))};
+}
+function ciHorasTexto(m){
+  if(!m)return "";
+  const partes=[];
+  const par=(k,txt)=>{if(m[k]>0)partes.push((m[k]/60).toFixed(1).replace(".",",")+" h "+txt);};
+  par("OD","ordinarias de día");par("ON","ordinarias de noche");
+  par("ODD","ordinarias dominical/festivo de día");par("ODN","ordinarias dominical/festivo de noche");
+  par("ED","extras de día");par("EN","extras de noche");
+  par("EDD","extras dominical/festivo de día");par("EDN","extras dominical/festivo de noche");
+  return partes.join(" · ");
+}
+function ciFilasDetalle(){
+  const r=ciRango();const salario=Number($("#ci-salario").value)||0;
+  const desglose=ciClasificar(r.desde,r.hasta);
+  const filas=[];
+  for(let f=r.desde;f<=r.hasta;f=sumarDias(f,1)){
+    const marca=cs.marcas[f]||"";
+    const m=desglose.dias[f];
+    const pr=m?ciPrecioDia(salario,f,m):{recargos:0,extras:0,vh:0};
+    filas.push({fecha:f,semana:NOMBRES_DIA_SEMANA[diaSemanaDe(f)],
+      marca:marca?(NOMBRES_MARCA_SIMPLE[marca]||marca):"— sin marca —",
+      esDom:esDomingoISO(f),esFes:esFestivoTabla(f),
+      horas:m?ciHorasTexto(m):"",
+      recargos:pr.recargos,extras:pr.extras,vh:pr.vh});
+  }
+  return{desde:r.desde,hasta:r.hasta,filas:filas};
+}
+function llenarDetalleDias(){
+  const d=ciFilasDetalle();
+  $("#ci-detalle-dias").innerHTML=d.filas.map(x=>
+    "<div><strong>"+escapar(x.fecha)+"</strong> ("+escapar(x.semana)+")"+(x.esFes?" · 🎉 <strong>festivo</strong>":x.esDom?" · domingo":"")+" — "+escapar(x.marca)+
+    (x.horas?"<br>Horas: "+escapar(x.horas):"")+
+    ((x.recargos||x.extras)?"<br>Recargos del día: <strong>"+dinero(x.recargos+x.extras)+"</strong>":"")+"</div>"
+  ).join("")||"<div>Marca días en el calendario y aquí aparece el detalle.</div>";
+}
+function construirReporteExcel(){
+  const hoy=new Date();
+  if(!ciUltimoResultado)calcularSimple();
+  const R=ciUltimoResultado;const d=ciFilasDetalle();
+  const salario=Number($("#ci-salario").value)||0;
+  const pRef=paramSimple(R.desde)||paramSimple(R.hasta);
+  const estiloCelda='style="border:1px solid #999;padding:4px 8px"';
+  const fila=(a,b)=>'<tr><td '+estiloCelda+'>'+a+'</td><td '+estiloCelda+'>'+b+'</td></tr>';
+  const filaDia=x=>'<tr><td '+estiloCelda+'>'+x.fecha+'</td><td '+estiloCelda+'>'+x.semana+'</td><td '+estiloCelda+'>'+escapar(x.marca)+'</td><td '+estiloCelda+'>'+(x.esFes?"Festivo":x.esDom?"Domingo":"")+'</td><td '+estiloCelda+'>'+escapar(x.horas)+'</td><td '+estiloCelda+'>'+(x.vh?dinero(x.vh):"")+'</td><td '+estiloCelda+'>'+dinero(x.recargos+x.extras)+'</td></tr>';
+  const html='<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body>'+
+  '<h2>Reporte de nómina — Calculadora de Nómina Sencilla</h2>'+
+  '<table>'+
+  fila("Período calculado",R.desde+" al "+R.hasta)+
+  fila("Reporte generado el",hoy.getFullYear()+"-"+pad2(hoy.getMonth()+1)+"-"+pad2(hoy.getDate()))+
+  fila("Salario mensual escrito","<strong>"+dinero(salario)+"</strong>")+
+  fila("Días trabajados",R.trabajo)+fila("Días de descanso",R.descanso)+
+  fila("Días con pago (trabajados + descansos)",R.diasPago)+
+  '</table>'+
+  '<h3>Así sale este sueldo (el porqué)</h3><table>'+
+  fila("Sueldo por los días pagados","Salario ÷ 30 × "+R.diasPago+" días = <strong>"+dinero(R.sueldo)+"</strong>")+
+  (R.pagoIncGen?fila("Incapacidad por enfermedad","Se paga en parte (66,67% los días 1 a 90 y 50% de 91 a 180, con piso de un salario mínimo diario): <strong>"+dinero(R.pagoIncGen)+"</strong>"):"")+
+  (R.pagoIncArl?fila("Incapacidad ARL","Se paga al 100% del salario diario: <strong>"+dinero(R.pagoIncArl)+"</strong>"):"")+
+  (R.recargos?fila("Recargos de noche y de dominical/festivo","Horas revisadas una por una con el reloj y la ley de cada fecha: <strong>"+dinero(R.recargos)+"</strong>"):"")+
+  (R.extras?fila("Horas extras","Las horas que pasan la jornada máxima de la semana se pagan como extras: <strong>"+dinero(R.extras)+"</strong>"):"")+
+  (R.auxilio?fila("Auxilio de transporte","Solo si el salario no pasa de 2 salarios mínimos, proporcional a los días pagados: <strong>"+dinero(R.auxilio)+"</strong>"):fila("Auxilio de transporte","$0 — con este salario no aplica (pasa de 2 salarios mínimos) o no hay días pagados."))+
+  fila("Total devengado","<strong>"+dinero(R.devengado)+"</strong>")+
+  fila("Descuento de salud (EPS)","<strong>− "+dinero(R.salud)+"</strong>")+
+  fila("Descuento de pensión","<strong>− "+dinero(R.pension)+"</strong>")+
+  (R.fsp?fila("Fondo de solidaridad pensional","<strong>− "+dinero(R.fsp)+"</strong>"):"")+
+  fila("LO QUE DEBE LLEGAR (NETO)","<strong>"+dinero(R.neto)+"</strong>")+
+  (R.esEstimacion?fila("⚠️ Aviso","Esta cuenta salió como ESTIMACIÓN: falta escribir algún valor oficial del año (mira el aviso amarillo de la calculadora)."):"")+
+  '</table>'+
+  '<h3>Detalle día por día</h3>'+
+  '<table><tr><th '+estiloCelda+'>Fecha</th><th '+estiloCelda+'>Día</th><th '+estiloCelda+'>Lo que marcaste</th><th '+estiloCelda+'>Domingo / festivo</th><th '+estiloCelda+'>Horas según la ley</th><th '+estiloCelda+'>Valor de la hora ese día</th><th '+estiloCelda+'>Recargos + extras del día</th></tr>'+
+  d.filas.map(filaDia).join("")+
+  '</table>'+
+  '<h3>Valores de ley usados en esta cuenta</h3><table>'+
+  (pRef?fila("Salario mínimo del año",dinero(pRef.smmlv))+fila("Auxilio de transporte del año",dinero(pRef.auxilio))+
+   fila("Jornada máxima semanal",pRef.jornadaMaxima+" horas (divisor mensual "+pRef.divisor+")")+
+   fila("La noche empieza a las",pRef.nocheDesde+":00")+
+   fila("Recargo nocturno",pRef.recargoNocturno+"%")+fila("Recargo dominical/festivo","según la fecha: mira los tramos en ⚙️ Valores por año")+
+   fila("Hora extra de día / de noche",pRef.extraDiurna+"% / "+pRef.extraNocturna+"%")+
+   fila("Descuento de salud / pensión del trabajador",pRef.saludTrabajador+"% / "+pRef.pensionTrabajador+"%")
+  :fila("Parámetros","Sin parámetros para este período."))+
+  '</table>'+
+  '<p>Reporte generado con la Calculadora de Nómina Sencilla, con los valores de ley cargados en la aplicación (sección ⚙️ Valores por año). Las horas se clasifican minuto a minuto según el turno marcado, la jornada máxima de cada semana y los domingos y festivos del calendario.</p>'+
+  '</body></html>';
+  return html;
+}
+$("#btn-reporte").addEventListener("click",()=>{
+  const contenido=construirReporteExcel();
+  const blob=new Blob(["\ufeff"+contenido],{type:"application/vnd.ms-excel;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  const r=ciRango();
+  a.href=url;a.download="Reporte-nomina-"+r.desde+"-al-"+r.hasta+".xls";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+});
+$("#ci-detalle-wrap").addEventListener("toggle",e=>{if(e.target.open)llenarDetalleDias();});
+
+/* ============================================================
+   Pantalla de ⚙️ Valores por año
+   ============================================================ */
+let cfgAnioSel=0;
+function cfgAnios(){return Object.keys(CFG).map(Number).sort((a,b)=>a-b);}
+function renderCfg(){
+  const anios=cfgAnios();
+  if(!cfgAnioSel||!CFG[cfgAnioSel])cfgAnioSel=anios[anios.length-1];
+  $("#cfg-anio").innerHTML=anios.map(a=>'<option value="'+a+'"'+(a===cfgAnioSel?" selected":"")+">"+a+"</option>").join("");
+  const c=CFG[cfgAnioSel];if(!c)return;
+  $("#cfg-aviso-anio").innerHTML=(Number(c.smmlv)>0)
+    ?'<div class="okcaja">El año '+cfgAnioSel+' ya tiene salario mínimo: <strong>'+dinero(c.smmlv)+'</strong> y auxilio: <strong>'+dinero(c.auxilio||0)+'</strong>.</div>'
+    :'<div class="aviso"><strong>Este año todavía no tiene salario mínimo.</strong> Cuando el Gobierno lo publique, escríbelo aquí abajo y toca «Guardar». Mientras tanto, las cuentas de este año salen como estimación.</div>';
+  $("#cfg-smmlv").value=c.smmlv||"";
+  $("#cfg-auxilio").value=c.auxilio||"";
+  $("#cfg-p-nocturno").value=c.recargoNocturno;$("#cfg-p-extrad").value=c.extraDiurna;$("#cfg-p-extran").value=c.extraNocturna;
+  $("#cfg-p-incap1").value=c.incap1a90;$("#cfg-p-incap2").value=c.incap91a180;$("#cfg-p-incaparl").value=c.incapARL;
+  $("#cfg-p-salud").value=c.salud;$("#cfg-p-pension").value=c.pension;
+  $("#cfg-festivos").value=(c.festivos||[]).join("\n");
+  $("#cfg-tramos").innerHTML=c.tramos.map((t,i)=>
+    '<div class="perfil-carta"><strong>Tramo '+(i+1)+'</strong>'+
+    '<div class="fila">'+
+    '<div><label>Desde</label><input type="date" data-tramo="'+i+'" data-campo="desde" value="'+escapar(t.desde)+'"></div>'+
+    '<div><label>Hasta</label><input type="date" data-tramo="'+i+'" data-campo="hasta" value="'+escapar(t.hasta||"")+'"></div>'+
+    '<div><label>Jornada máxima (horas/semana)</label><input type="number" min="1" max="60" data-tramo="'+i+'" data-campo="jornada" value="'+t.jornada+'"></div>'+
+    '<div><label>La noche empieza a las (hora)</label><input type="number" min="0" max="24" data-tramo="'+i+'" data-campo="nocheDesde" value="'+t.nocheDesde+'"></div>'+
+    '<div><label>Recargo dominical/festivo (%)</label><input type="number" min="0" max="200" data-tramo="'+i+'" data-campo="dominical" value="'+t.dominical+'"></div>'+
+    '</div>'+
+    (c.tramos.length>1?'<button type="button" class="peligro" data-tramo-borrar="'+i+'">Quitar este tramo</button>':"")+
+    '</div>').join("");
+  document.querySelectorAll("[data-tramo]").forEach(inp=>inp.addEventListener("change",()=>{
+    const t=CFG[cfgAnioSel].tramos[Number(inp.dataset.tramo)];if(!t)return;
+    if(inp.dataset.campo==="desde"||inp.dataset.campo==="hasta")t[inp.dataset.campo]=inp.value;
+    else t[inp.dataset.campo]=Number(inp.value)||0;
+    CFG[cfgAnioSel].tramos.sort((a,b)=>a.desde<b.desde?-1:1);
+  }));
+  document.querySelectorAll("[data-tramo-borrar]").forEach(b=>b.addEventListener("click",()=>{
+    CFG[cfgAnioSel].tramos.splice(Number(b.dataset.tramoBorrar),1);renderCfg();
+  }));
+}
+function cfgLeerCampos(){
+  const c=CFG[cfgAnioSel];if(!c)return;
+  c.smmlv=Number($("#cfg-smmlv").value)||0;
+  c.auxilio=Number($("#cfg-auxilio").value)||0;
+  c.recargoNocturno=Number($("#cfg-p-nocturno").value)||0;
+  c.extraDiurna=Number($("#cfg-p-extrad").value)||0;
+  c.extraNocturna=Number($("#cfg-p-extran").value)||0;
+  c.incap1a90=Number($("#cfg-p-incap1").value)||0;
+  c.incap91a180=Number($("#cfg-p-incap2").value)||0;
+  c.incapARL=Number($("#cfg-p-incaparl").value)||0;
+  c.salud=Number($("#cfg-p-salud").value)||0;
+  c.pension=Number($("#cfg-p-pension").value)||0;
+  const lineas=$("#cfg-festivos").value.split(/\s+/).map(s=>s.trim()).filter(Boolean);
+  const buenos=[],malos=[];
+  lineas.forEach(s=>{
+    const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if(m&&Number(m[1])===cfgAnioSel){const f=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));if(f.getFullYear()===Number(m[1])&&f.getMonth()===Number(m[2])-1&&f.getDate()===Number(m[3])){if(buenos.indexOf(s)<0)buenos.push(s);return;}}
+    malos.push(s);
+  });
+  buenos.sort();c.festivos=buenos;
+  return malos;
+}
+$("#cfg-anio").addEventListener("change",()=>{cfgAnioSel=Number($("#cfg-anio").value);renderCfg();});
+$("#btn-cfg-guardar").addEventListener("click",()=>{
+  const malos=cfgLeerCampos();csGuardar();renderCfg();renderCalendarioSimple();calcularSimple();
+  $("#cfg-msg").innerHTML='<div class="okcaja">✓ Valores del año '+cfgAnioSel+' guardados. La calculadora ya calcula con ellos.</div>'+
+    (malos.length?'<div class="aviso">Estas líneas de festivos no se pudieron usar (revisa el formato AAAA-MM-DD y que sean de este año): '+escapar(malos.join(", "))+'</div>':"");
+});
+$("#btn-cfg-nuevo").addEventListener("click",()=>{
+  const anios=cfgAnios();const ultimo=anios[anios.length-1];const nuevo=ultimo+1;
+  if(CFG[nuevo]){cfgAnioSel=nuevo;renderCfg();return;}
+  const base=CFG[ultimo];
+  const tramos=base.tramos.map(t=>({desde:String(nuevo)+t.desde.slice(4),hasta:t.hasta?String(nuevo)+t.hasta.slice(4):"",jornada:t.jornada,nocheDesde:t.nocheDesde,dominical:t.dominical}));
+  CFG[nuevo]=cfgAnioBase(0,0,tramos,[]);
+  /* el dominical de la Ley 2466 ya quedó en su tope de 100% desde jul-2027 */
+  cfgAnioSel=nuevo;csGuardar();renderCfg();
+  $("#cfg-msg").innerHTML='<div class="okcaja">✓ Año '+nuevo+' preparado con la misma jornada y recargos del '+ultimo+'. Solo falta que escribas el <strong>salario mínimo</strong> y el <strong>auxilio</strong> cuando el Gobierno los publique, y los <strong>festivos</strong> de ese año. Después toca «Guardar».</div>';
+  const tg=$("#cfg-tarjeta");if(tg&&typeof tg.scrollIntoView==="function"){try{tg.scrollIntoView({behavior:"smooth"});}catch(e){}}
+});
+$("#btn-cfg-split").addEventListener("click",()=>{const d=$("#cfg-split");d.style.display=d.style.display==="none"?"block":"none";});
+$("#btn-cfg-split-ok").addEventListener("click",()=>{
+  const c=CFG[cfgAnioSel];const desde=$("#cfg-split-desde").value;
+  if(!desde||Number(desde.slice(0,4))!==cfgAnioSel){alert("Escribe la fecha del cambio dentro del año "+cfgAnioSel+".");return;}
+  const t=c.tramos.find(t=>desde>=t.desde&&(!t.hasta||desde<=t.hasta));
+  if(!t){alert("Ese día no está dentro de ningún tramo de este año. Revisa los tramos de arriba.");return;}
+  if(desde===t.desde){alert("El cambio empieza justo donde ya empieza un tramo: corrige ese tramo directamente.");return;}
+  const nuevoT={desde:desde,hasta:t.hasta,jornada:t.jornada,nocheDesde:t.nocheDesde,dominical:t.dominical};
+  const j=Number($("#cfg-split-jornada").value);if(j>0)nuevoT.jornada=j;
+  const dm=Number($("#cfg-split-dom").value);if($("#cfg-split-dom").value!=="")nuevoT.dominical=dm;
+  const n=Number($("#cfg-split-noche").value);if($("#cfg-split-noche").value!=="")nuevoT.nocheDesde=n;
+  t.hasta=sumarDias(desde,-1);
+  c.tramos.push(nuevoT);c.tramos.sort((a,b)=>a.desde<b.desde?-1:1);
+  csGuardar();renderCfg();renderCalendarioSimple();calcularSimple();
+  $("#cfg-msg").innerHTML='<div class="okcaja">✓ Cambio agregado desde el '+escapar(desde)+'. Los días anteriores siguen con los valores de antes.</div>';
+});
+
+
+/* ============================================================
+   Arranque
+   ============================================================ */
+try{renderCalculadoraSimple();renderCfg();}
+catch(err){
+  const aviso=document.createElement("div");aviso.className="error";aviso.style.margin="14px";
+  aviso.textContent="Hubo un problema al iniciar la aplicación en este navegador. Cierra y vuelve a abrir el archivo; si sigue igual, avísame con una captura de este mensaje.";
+  document.body.insertBefore(aviso,document.body.firstChild);
+}
+</script>
+
+<footer class="adr-pie">
+  <p><strong style="color:#e8edf5">ADR Software</strong> — aplicaciones y software a medida.<br>
+  ¿Necesitas una app para tu empresa o conjunto? <a href="https://wa.me/573008844143?text=Hola%20ADR%20Software%2C%20vi%20su%20Calculadora%20de%20N%C3%B3mina%20y%20quiero%20informaci%C3%B3n%20de%20sus%20aplicaciones." target="_blank" rel="noopener">Escríbenos por WhatsApp: 300 884 4143</a></p>
+  <p>Los valores de esta calculadora se actualizan cada año según la ley colombiana. Es una herramienta de ayuda: confirma siempre tu liquidación con tu empleador o tu contador.</p>
+</footer>
+<a class="adr-flotante" href="https://wa.me/573008844143?text=Hola%20ADR%20Software%2C%20vi%20su%20Calculadora%20de%20N%C3%B3mina%20y%20quiero%20informaci%C3%B3n%20de%20sus%20aplicaciones." target="_blank" rel="noopener">💬 WhatsApp</a>
+</body>
+</html>
