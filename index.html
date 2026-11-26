@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="theme-color" content="#123c2b">
-<title>Calculadora de Nómina Colombia — Gratis | ADR Software</title>
+<title>Calcula tu Nómina — Gratis | ADR Software</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23123c2b'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle' fill='white'%3E%24%3C/text%3E%3C/svg%3E">
 <style>
 /* ===== Estilos (base conservada del proyecto existente) ===== */
@@ -110,7 +110,7 @@ details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointe
   <div class="adr-lema">Aplicaciones y software a medida para tu negocio · Esta calculadora es gratuita</div>
 </div>
 <!-- ============================================================
-     Calculadora de Nómina Sencilla (proyecto independiente)
+     Calcula tu Nómina (proyecto independiente)
      Una sola página: marcas tus días y calcula todo por ley.
      Los valores de cada año (salario mínimo, auxilio, recargos,
      festivos) se pueden escribir en la tarjeta ⚙️ Valores por año.
@@ -118,7 +118,7 @@ details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointe
      este dispositivo (localStorage, clave propia).
      ============================================================ -->
 <header>
-  <h1>🧮 Calculadora de Nómina Sencilla</h1>
+  <h1>🧮 Calcula tu Nómina</h1>
   <p>Solo marca tus días: ella calcula tu quincena o tu mes por ley. Gratis, sin registro.</p>
 </header>
 <main>
@@ -600,7 +600,7 @@ function construirReporteExcel(){
   const fila=(a,b)=>'<tr><td '+estiloCelda+'>'+a+'</td><td '+estiloCelda+'>'+b+'</td></tr>';
   const filaDia=x=>'<tr><td '+estiloCelda+'>'+x.fecha+'</td><td '+estiloCelda+'>'+x.semana+'</td><td '+estiloCelda+'>'+escapar(x.marca)+'</td><td '+estiloCelda+'>'+(x.esFes?"Festivo":x.esDom?"Domingo":"")+'</td><td '+estiloCelda+'>'+escapar(x.horas)+'</td><td '+estiloCelda+'>'+(x.vh?dinero(x.vh):"")+'</td><td '+estiloCelda+'>'+dinero(x.recargos+x.extras)+'</td></tr>';
   const html='<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body>'+
-  '<h2>Reporte de nómina — Calculadora de Nómina Sencilla</h2>'+
+  '<h2>Reporte de nómina — Calcula tu Nómina</h2>'+
   '<table>'+
   fila("Período calculado",R.desde+" al "+R.hasta)+
   fila("Reporte generado el",hoy.getFullYear()+"-"+pad2(hoy.getMonth()+1)+"-"+pad2(hoy.getDate()))+
@@ -635,7 +635,7 @@ function construirReporteExcel(){
    fila("Descuento de salud / pensión del trabajador",pRef.saludTrabajador+"% / "+pRef.pensionTrabajador+"%")
   :fila("Parámetros","Sin parámetros para este período."))+
   '</table>'+
-  '<p>Reporte generado con la Calculadora de Nómina Sencilla, con los valores de ley cargados en la aplicación (valores oficiales cargados en esta página). Las horas se clasifican minuto a minuto según el turno marcado, la jornada máxima de cada semana y los domingos y festivos del calendario.</p>'+
+  '<p>Reporte generado con Calcula tu Nómina, con los valores de ley cargados en la aplicación (valores oficiales cargados en esta página). Las horas se clasifican minuto a minuto según el turno marcado, la jornada máxima de cada semana y los domingos y festivos del calendario.</p>'+
   '</body></html>';
   return html;
 }
