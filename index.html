@@ -92,6 +92,8 @@ input.ci-salario{font-size:24px;font-weight:800;text-align:center;padding:14px}
 details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointer}
 .scroll-x{overflow-x:auto}
 </style>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; base-uri 'self'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -150,6 +152,12 @@ input.ci-salario{border-radius:14px}
 #instrucciones li{margin-bottom:7px}
 #terminos summary{font-size:16.5px}
 #terminos p{line-height:1.6;color:#33456B}
+/* Derechos por oficio y comentarios */
+#vigilantes h3{margin-top:18px}
+#vigilantes details{margin-top:14px;border-top:1px solid #E3EBF9;padding-top:12px}
+#vigilantes summary{font-size:16.5px;color:#0B1736}
+#vigilantes p{line-height:1.6}
+#comentarios textarea{min-height:110px}
 /* Pie y flotante */
 .adr-pie{background:linear-gradient(180deg,#0B1736,#081026);color:#C3D4F2;text-align:center;padding:30px 16px 38px;margin-top:10px}
 .adr-pie-marca{font-size:18px;color:#fff;margin:0 0 8px}
@@ -242,6 +250,36 @@ input.ci-salario{border-radius:14px}
     <li><strong>Mira tu resultado</strong> en «💰 LO QUE TE DEBE LLEGAR». Para ver el porqué completo, descarga el <strong>reporte en Excel</strong> o abre el detalle día por día: ese es tu sustento si tienes que reclamar tu pago.</li>
   </ol>
   <p class="peq"><strong>¿No te coincide con lo que te pagaron?</strong> Revisa primero tres cosas: que tu salario esté bien escrito, que las horas de tus turnos sean las tuyas y que <strong>todos</strong> los días del periodo estén marcados.</p>
+</div>
+
+<div class="tarjeta" id="vigilantes">
+<h2>🛡️ Artículos que aplican para los vigilantes</h2>
+<p>Si eres vigilante y tu empleador te cita artículos para pagarte menos, estos son los que <strong>sí existen</strong> y lo que dicen, en palabras claras. Compáralos: si el artículo que te mencionan no está aquí, desconfía.</p>
+<h3>1. Ley 1920 de 2018, artículo 7 — la «Ley del Vigilante»</h3>
+<p>Puedes trabajar turnos de hasta <strong>12 horas al día</strong> y máximo <strong>60 horas a la semana</strong>, pero solo si hay un <strong>acuerdo firmado por ti y por tu empleador</strong>. Sin ese papel firmado, tu tope de horas extras es el de cualquier trabajador: 2 al día.</p>
+<h3>2. El turno de 12 horas NO elimina las extras</h3>
+<p>El Ministerio del Trabajo lo aclaró en la <strong>Circular 079 de 2023</strong> (y lo repitió en la Circular 0040 de 2026): el turno de 12 horas se compone de jornada ordinaria <strong>más</strong> horas extras. Todo lo que pase de tu jornada ordinaria se paga como hora extra, con su recargo. Nadie te puede decir que «por ser vigilante, las 12 horas son ordinarias».</p>
+<h3>3. Ley 2101 de 2021 — la reducción también es tuya</h3>
+<p>Desde el 15 de julio de 2026 la jornada ordinaria de todos, incluida la tuya, es de <strong>42 horas semanales</strong>, sin que te puedan bajar el salario. Lo que trabajes por encima de esas 42 horas en la semana es trabajo extra.</p>
+<h3>4. Tus recargos son los mismos de todos</h3>
+<p>Por el Código Sustantivo del Trabajo y la Ley 2466 de 2025: recargo nocturno <strong>35%</strong> (la noche empieza a las <strong>7:00 p. m.</strong>), hora extra diurna <strong>+25%</strong>, hora extra nocturna <strong>+75%</strong>, y domingo o festivo <strong>90%</strong> en 2026 (será 100% desde julio de 2027). Tu <strong>día de descanso semanal es obligatorio</strong>: nadie te lo puede quitar.</p>
+<h3>5. ¿A quién cubre la regla de las 12 horas?</h3>
+<p>Solo al personal de empresas o cooperativas de vigilancia <strong>autorizadas por la Superintendencia de Vigilancia y Seguridad Privada</strong>. Si un conjunto o una empresa te contrató <strong>directamente</strong> como portero o celador, te rige el régimen general completo. La única excepción del Código (artículo 162) exige que vivas en el sitio de trabajo: si te vas a tu casa al terminar el turno, esa excepción no te aplica.</p>
+<details>
+<summary>🧹 Si eres empleada o empleado doméstico</summary>
+<p><strong>Tienes los mismos derechos que cualquier trabajador.</strong> La reforma laboral (Ley 2466 de 2025) eliminó la vieja excepción que dejaba al servicio doméstico por fuera de la jornada máxima: hoy tu jornada máxima es la legal, <strong>42 horas semanales</strong>, con horas extras (máximo 2 al día), recargo nocturno y dominical.</p>
+<p>Tu contrato debe ser <strong>escrito</strong> y estar registrado en la planilla PILA (artículo 33 de la Ley 2466). Pero ojo: si no te lo dieron por escrito, <strong>tus derechos existen igual</strong>.</p>
+<p>También tienes: <strong>prima de servicios</strong> en junio y diciembre desde la Ley 1788 de 2016 — también si trabajas <strong>por días</strong>, en forma proporcional —; <strong>cesantías</strong> de un mes de salario por año (la antigua regla de cesantía reducida ya no existe) y <strong>vacaciones</strong> de 15 días hábiles por año.</p>
+<p>Si trabajas por días, tu empleador debe cotizar tu seguridad social <strong>por semanas</strong> (Decreto 2616 de 2013): trabajar por días reduce las cuentas a proporción, nunca tus derechos. Y si vives en la casa donde trabajas, la parte del salario pagada en especie (comida y habitación) tiene tope: máximo el <strong>30%</strong> si ganas el salario mínimo (artículo 129 del Código Sustantivo del Trabajo).</p>
+</details>
+<details>
+<summary>🧰 Si eres conserje</summary>
+<p><strong>No eres vigilante ante la ley:</strong> la regla de los turnos de 12 horas (Ley 1920) es solo para el personal de empresas de vigilancia autorizadas. A ti te rige el régimen general: jornada máxima de 42 horas semanales y horas extras pagadas con recargo.</p>
+<p>El artículo que más te citan es el <strong>162 del Código Sustantivo del Trabajo</strong>, que excluye de la jornada máxima a los de «simple vigilancia» <strong>que residan en el sitio de trabajo</strong>. La excepción exige las dos cosas a la vez. Si tu trabajo es activo —limpiar, hacer mantenimiento, atender residentes— eso <strong>no</strong> es «simple vigilancia», así vivas en el edificio. Y si no vives ahí, la excepción no aplica de ninguna manera.</p>
+<p>Conclusión: si trabajas más allá de la jornada máxima, te deben las extras como a cualquier trabajador.</p>
+</details>
+<h3>¿Te salieron con un artículo raro?</h3>
+<p>Pide que te lo muestren <strong>por escrito</strong> y compáralo con esta lista. Y si quieres, cuéntanos tu caso en la sección de <a href="#comentarios">comentarios</a> de esta misma página: te ayudamos a revisar tu cuenta con esta calculadora.</p>
 </div>
 
 <div class="tarjeta" id="cfg-tarjeta">
@@ -842,11 +880,34 @@ catch(err){
   </details>
 </div>
 
+<div class="tarjeta" id="comentarios">
+<h2>💬 Déjanos tus comentarios</h2>
+<p>¿Tienes una duda con tu nómina, un caso con tu empleador o una pregunta sobre cómo usar la calculadora? Escríbenos aquí: tu comentario llega a nuestro WhatsApp y te ayudamos a revisar tu caso.</p>
+<form id="form-comentarios">
+<label for="com-nombre">Tu nombre (opcional)</label>
+<input id="com-nombre" type="text" autocomplete="name" placeholder="Ej.: Carlos, vigilante en Bogotá">
+<label for="com-texto">Tu comentario o duda</label>
+<textarea id="com-texto" required placeholder="Cuéntanos tu caso: qué te dijeron, qué te pagaron, qué quieres verificar…"></textarea>
+<button type="submit" class="accion">Enviar por WhatsApp</button>
+</form>
+<p class="peq">Al enviar se abre WhatsApp con tu texto listo; solo tienes que tocar «Enviar» allá. Tu comentario no se publica en esta página.</p>
+</div>
+<script>
+document.getElementById('form-comentarios').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var n = document.getElementById('com-nombre').value.trim();
+  var t = document.getElementById('com-texto').value.trim();
+  if (!t) return;
+  var msg = 'Hola ADR Software, les escribo desde la página Calcula tu Nómina.' + (n ? ' Soy ' + n + '.' : '') + '\n\n' + t;
+  window.open('https://wa.me/573008844143?text=' + encodeURIComponent(msg), '_blank');
+});
+</script>
+
 <footer class="adr-pie">
 <p class="adr-pie-marca">ADR <b>Software</b> · Aplicaciones y software a medida</p>
 <p>¿Necesitas una aplicación o una página web para tu negocio?<br>
 <a href="https://wa.me/573008844143?text=Hola%20ADR%20Software%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20aplicaciones%20y%20software%20a%20medida." target="_blank" rel="noopener">Escríbenos por WhatsApp: 300 884 4143</a></p>
-<p class="adr-pie-links"><a href="#instrucciones">Cómo usarla</a> · <a href="#terminos">Términos y condiciones</a></p>
+<p class="adr-pie-links"><a href="#instrucciones">Cómo usarla</a> · <a href="#vigilantes">Artículos para vigilantes</a> · <a href="#terminos">Términos y condiciones</a> · <a href="#comentarios">Comentarios</a></p>
 <p class="adr-pie-nota">Calcula tu Nómina es una herramienta de referencia. La liquidación oficial la define tu empleador o la entidad competente.</p>
 </footer>
 <a class="adr-flotante" href="https://wa.me/573008844143?text=Hola%20ADR%20Software%2C%20tengo%20una%20pregunta%20sobre%20Calcula%20tu%20N%C3%B3mina." target="_blank" rel="noopener" aria-label="Escribir a ADR Software por WhatsApp">💬</a>
