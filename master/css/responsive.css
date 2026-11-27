@@ -1,0 +1,45 @@
+/* ============================================================
+   ADR SOFTWARE — responsive.css
+   ============================================================ */
+@media (max-width:1020px){
+  .rejilla-soluciones{grid-template-columns:repeat(2,1fr)}
+  .linea-pasos{grid-template-columns:repeat(2,1fr)}
+  .hero-interior{grid-template-columns:1fr;gap:8px}
+  .hero{padding-top:132px}
+  .hero-sub{max-width:640px}
+  .hero-escena{height:470px;max-width:560px;width:100%;margin:6px auto 0}
+}
+@media (max-width:820px){
+  .nav-enlaces{
+    position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;
+    background:rgba(8,11,18,.97);border-bottom:1px solid var(--linea);
+    padding:8px 22px 16px;display:none;
+  }
+  .nav-enlaces.abierto{display:flex}
+  .nav-enlaces a{padding:11px 0;border-bottom:1px solid rgba(198,206,216,.07);font-size:16px}
+  .nav-enlaces a:last-child{border-bottom:none}
+  .nav-burger{display:block}
+  .btn-nav{display:none}
+  .rejilla-productos{grid-template-columns:1fr}
+  .proyecto{grid-template-columns:1fr}
+  .proyecto-media{min-height:210px;max-height:300px}
+  .propuesta-interior,.contacto-interior{grid-template-columns:1fr;gap:36px}
+  .seccion{padding:76px 0}
+}
+@media (max-width:560px){
+  .rejilla-soluciones,.linea-pasos{grid-template-columns:1fr}
+  .tarjeta-producto{grid-template-columns:1fr}
+  .producto-media{min-height:200px;max-height:290px}
+  .proyecto-funciones{grid-template-columns:1fr}
+  .hero{padding:118px 0 92px}
+  .hero-escena{height:400px}
+  .panel-1{width:118px}
+  .panel-1 img{height:158px}
+  .panel-2{display:none}
+  .panel-3{bottom:26px;left:0}
+  .esfera-respaldo{width:250px;height:250px}
+  .hero-ctas .btn{width:100%;justify-content:center}
+  .formulario{padding:24px 19px}
+  .pie-interior{flex-direction:column;align-items:flex-start}
+  .pie-enlaces{margin-left:0}
+}

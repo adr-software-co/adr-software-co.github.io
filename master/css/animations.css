@@ -1,0 +1,35 @@
+/* ============================================================
+   ADR SOFTWARE — animations.css
+   Movimiento ambiental y microinteracciones (sin GSAP también
+   debe verse bien: los estados iniciales ocultos los pone GSAP,
+   nunca el CSS).
+   ============================================================ */
+@keyframes flotarSuave{
+  from{transform:translateY(0)}
+  to{transform:translateY(-13px)}
+}
+@keyframes pulsoPunto{
+  0%,100%{box-shadow:0 0 0 0 rgba(52,211,153,.45)}
+  55%{box-shadow:0 0 0 6px rgba(52,211,153,0)}
+}
+@keyframes bajarSuave{
+  0%,100%{transform:translate(-50%,0)}
+  50%{transform:translate(-50%,7px)}
+}
+.panel-1{animation:flotarSuave 6.5s ease-in-out infinite alternate}
+.panel-2{animation:flotarSuave 7.5s ease-in-out infinite alternate-reverse}
+.panel-3{animation:flotarSuave 8.5s ease-in-out infinite alternate}
+.hero .punto{animation:pulsoPunto 2.6s ease-in-out infinite}
+.hero-bajar{animation:bajarSuave 2.8s ease-in-out infinite}
+.hero-luz-1{animation:flotarSuave 11s ease-in-out infinite alternate}
+.hero-luz-2{animation:flotarSuave 13s ease-in-out infinite alternate-reverse}
+
+.tarjeta-solucion,.tarjeta-producto,.proyecto,.paso,.propuesta-lista li{will-change:transform}
+.enlace-mas span{transition:transform .15s}
+input::placeholder,textarea::placeholder{color:#5F6E87}
+
+/* Movimiento reducido: todo quieto, todo visible */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}

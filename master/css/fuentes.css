@@ -1,0 +1,10 @@
+/* Fuentes vendidas localmente: Inter y Manrope variables (licencia OFL 1.1).
+   El sitio no depende de Google Fonts ni de ningún servidor externo. */
+@font-face{
+  font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;
+  src:url('../assets/fonts/inter-var.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Manrope';font-style:normal;font-weight:600 800;font-display:swap;
+  src:url('../assets/fonts/manrope-var.woff2') format('woff2');
+}
