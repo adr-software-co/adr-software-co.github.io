@@ -96,82 +96,201 @@ details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointe
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ===== Piel premium ADR (solo versión web; la lógica no se toca) ===== */
-:root{--verde:#0B1736;--verde2:#2563EB;--fondo:#EDF2FB;--borde:#C9D6EE;--ok:#15803D;--gris:#54678C}
-body{font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(180deg,#DCE8FC 0,#EFF4FE 340px,#EDF2FB 100%);color:#101A2E}
+/* ===== Piel OSCURA tipo SaaS premium (estilo pedido por Anderson el 2026-11-26:
+   fondo casi negro azulado, paneles de cristal, degradado cian→azul→violeta,
+   botón principal pastilla BLANCA con texto oscuro y flecha, secundarios outline.
+   Solo versión web; la lógica de cálculo no se toca) ===== */
+:root{--verde:#E8ECF4;--verde2:#38BDF8;--fondo:#05060A;--borde:rgba(255,255,255,.14);--ok:#4ADE80;--mal:#F87171;--aviso:#FFC94D;--fondo-aviso:rgba(255,201,77,.12);--gris:#9AA3B2}
+body{font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#E8ECF4;background:radial-gradient(900px 520px at 12% -5%,rgba(37,99,235,.22) 0%,rgba(37,99,235,0) 60%),radial-gradient(820px 520px at 92% 0%,rgba(124,58,237,.18) 0%,rgba(124,58,237,0) 60%),radial-gradient(700px 600px at 50% 115%,rgba(34,211,238,.10) 0%,rgba(34,211,238,0) 60%),#05060A;background-attachment:fixed}
 main{max-width:1020px;padding:20px 16px 30px}
+::selection{background:rgba(56,189,248,.35)}
+.tarjeta a{color:#38BDF8}
 /* Héroe */
-header{position:static;background:linear-gradient(125deg,#0B1736 0%,#12295E 62%,#1D4ED8 130%);padding:20px 18px 26px;text-align:center;box-shadow:0 14px 34px rgba(11,23,54,.28)}
-header h1{font-size:clamp(27px,5.4vw,38px);font-weight:800;letter-spacing:-.02em;margin-top:14px}
-header p{font-size:15.5px;opacity:.92;max-width:620px;margin:8px auto 0;line-height:1.55}
+header{position:relative;overflow:hidden;background:linear-gradient(160deg,#070812 0%,#0B1020 55%,#111736 100%);padding:20px 18px 92px;text-align:center;box-shadow:0 18px 44px rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.08)}
+header::before,header::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+header::before{width:360px;height:360px;top:-150px;right:-90px;background:radial-gradient(circle,rgba(56,189,248,.5) 0%,rgba(56,189,248,0) 68%);animation:flotar 9s ease-in-out infinite alternate}
+header::after{width:300px;height:300px;bottom:-160px;left:-70px;background:radial-gradient(circle,rgba(168,85,247,.45) 0%,rgba(168,85,247,0) 68%);animation:flotar 11s ease-in-out infinite alternate-reverse}
+header>*{position:relative;z-index:1}
+@keyframes flotar{from{transform:translateY(0)}to{transform:translateY(28px)}}
+header h1{font-family:'Sora','Inter',sans-serif;font-size:clamp(27px,5.4vw,38px);font-weight:800;letter-spacing:-.02em;margin-top:14px;color:#FFFFFF}
+header h1 .grad{background:linear-gradient(90deg,#38BDF8,#6366F1,#A855F7);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{font-size:15.5px;opacity:.92;max-width:620px;margin:8px auto 0;line-height:1.55;color:#A8AEBD}
 .adr-marca{display:flex;align-items:center;gap:10px;max-width:1020px;margin:0 auto;text-align:left}
 .adr-marca img{width:46px;height:46px;border-radius:11px;box-shadow:0 6px 16px rgba(0,0,0,.35)}
-.adr-marca-nombre{font-size:19px;font-weight:800;color:#fff;letter-spacing:-.01em}
-.adr-marca-nombre b{color:#2DD4E1;font-weight:800}
+.adr-marca-nombre{font-family:'Sora','Inter',sans-serif;font-size:19px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.adr-marca-nombre b{color:#38BDF8;font-weight:800}
 .adr-confianza{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
-.adr-confianza span{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#EAF1FE;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px}
-/* Tarjetas y controles */
-.tarjeta{border:none;border-radius:20px;padding:22px;box-shadow:0 12px 32px rgba(11,23,54,.09);margin-bottom:18px}
-.tarjeta h2{color:#0B1736;font-size:20px;letter-spacing:-.01em}
-.tarjeta h3{color:#0B1736}
-input,select,textarea{border:1.5px solid var(--borde);border-radius:12px;padding:11px 12px;transition:border-color .15s,box-shadow .15s}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#2563EB;box-shadow:0 0 0 4px rgba(37,99,235,.16)}
-button.accion{background:linear-gradient(135deg,#2563EB,#1D4ED8);border-radius:12px;padding:14px 16px;font-size:15.5px;font-weight:700;box-shadow:0 10px 22px rgba(37,99,235,.28)}
-button.secundario{border:2px solid #2563EB;color:#2563EB;border-radius:12px;font-weight:600}
-button.peligro{border-radius:12px}
-summary{color:#0B1736}
-.aviso,.error,.okcaja{border-radius:12px}
-.etiqueta{background:#E3EDFF;color:#0B1736}
+.adr-confianza span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#E8ECF4;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px}
+/* Navegación por pasos: cristal; el paso activo es la pastilla blanca */
+nav button{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);color:#E8ECF4;border-radius:999px}
+nav button.activo{background:#FFFFFF;color:#0A0A0F;border-color:#FFFFFF}
+/* Tarjetas de cristal */
+.tarjeta{background:linear-gradient(180deg,rgba(17,24,43,.88),rgba(11,16,32,.92));border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:22px;box-shadow:0 18px 44px rgba(0,0,0,.45);margin-bottom:18px}
+.tarjeta h2{font-family:'Sora','Inter',sans-serif;color:#F5F7FA;font-size:20px;letter-spacing:-.01em}
+.tarjeta h3{color:#F5F7FA}
+label{color:#E8ECF4}
+.peq{color:#9AA3B2}
+input,select,textarea{background:#0E1428;color:#F5F7FA;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:11px 12px;transition:border-color .15s,box-shadow .15s}
+select option{background:#0E1428;color:#F5F7FA}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#38BDF8;box-shadow:0 0 0 4px rgba(56,189,248,.22)}
+input[type="checkbox"],input[type="radio"]{accent-color:#38BDF8}
+/* Botón principal: pastilla blanca, texto oscuro, flecha (jerarquía del diseño de referencia) */
+button.accion{background:#FFFFFF;color:#0A0A0F;border:none;border-radius:999px;padding:14px 16px;font-size:15.5px;font-weight:700;box-shadow:0 12px 28px rgba(255,255,255,.14)}
+button.accion::after{content:" →"}
+button.secundario{background:transparent;border:1px solid rgba(255,255,255,.30);color:#FFFFFF;border-radius:999px;font-weight:600}
+button.peligro{background:transparent;border:1px solid rgba(246,168,168,.55);color:#F6A8A8;border-radius:999px}
+summary{color:#F5F7FA}
+th,td{border-bottom:1px solid rgba(255,255,255,.08)}
+.aviso{background:rgba(255,201,77,.10);border:1px solid rgba(255,201,77,.35);color:#FFE1A8;border-radius:14px}
+.error{background:rgba(180,35,24,.16);border:1px solid rgba(242,184,178,.40);color:#FFC9C4;border-radius:14px}
+.okcaja{background:rgba(19,117,71,.18);border:1px solid rgba(169,220,192,.35);color:#B9E8CC;border-radius:14px}
+.etiqueta{background:rgba(56,189,248,.14);color:#7DD3FC}
+.etiqueta.pendiente{background:rgba(255,201,77,.14);color:#FFC94D}
+.etiqueta.verificado{background:rgba(74,222,128,.14);color:#4ADE80}
+.pendiente-caja{border:2px dashed rgba(255,255,255,.25);color:#9AA3B2;border-radius:16px}
+.perfil-carta{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.03);border-radius:16px}
 /* Marcado rápido y calendario */
-.rapido-btn{border:2px solid #D7E1F2;border-radius:16px;transition:transform .12s,box-shadow .12s}
-.rapido-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(11,23,54,.10)}
-.rapido-btn.activo{border-color:#2563EB;background:#CFE1FF}
-.rapido-btn[data-modo-rapido="trabajado"].activo{background:#BFE6C8;border-color:#15803D}
-.rapido-btn[data-modo-rapido="descanso"].activo{background:#CCD9EC;border-color:#3D5A99}
+.rapido-btn{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.14);color:#F5F7FA;border-radius:16px;transition:transform .12s,box-shadow .12s}
+.rapido-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.rapido-btn.activo{color:#12211A;border-color:#38BDF8}
+.rapido-btn[data-modo-rapido="trabajado"].activo{background:#BFE6C8;border-color:#4ADE80}
+.rapido-btn[data-modo-rapido="descanso"].activo{background:#CCD9EC;border-color:#38BDF8}
 .rapido-btn[data-modo-rapido="incapacidad_general"].activo{background:#FFC98A;border-color:#E07B24}
 .rapido-btn[data-modo-rapido="incapacidad_arl"].activo{background:#F6A8A8;border-color:#D63A3A}
 .rapido-btn[data-modo-rapido="borrar"].activo{background:#F2B8B2;border-color:#B42318}
-.cal-dia{border-radius:12px;border-color:#D7E1F2}
-.cal-dia.sel{outline:3px solid #2563EB}
-.cal-cab div{color:#0B1736}
+.cal-dia{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);color:#E8ECF4;border-radius:12px}
+.cal-dia.domingo{background:rgba(255,201,77,.07)}
+.cal-dia.festivo{background:rgba(246,168,168,.08)}
+.cal-dia.sin-registro{color:#9AA3B2}
+.cal-dia.sel{outline:3px solid #38BDF8}
+.cal-dia.marcado-trabajado,.cal-dia.marcado-descanso,.cal-dia.marcado-incapacidad,.cal-dia.marcado-incapacidad-arl{color:#12211A}
+.cal-cab div{color:#9AA3B2}
 /* Modo pregunta por pregunta */
-.ci-pregunta{color:#0B1736}
-.ci-boton{border:2px solid #D7E1F2;border-radius:16px;transition:transform .12s,box-shadow .12s}
-.ci-boton:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(11,23,54,.10)}
-.ci-boton.activo{background:#CFE1FF;border-color:#2563EB}
-.ci-paso button{border-color:#2563EB;color:#2563EB}
+.ci-pregunta{color:#F5F7FA}
+.ci-boton{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.14);color:#F5F7FA;border-radius:16px;transition:transform .12s,box-shadow .12s}
+.ci-boton:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.ci-boton.activo{background:linear-gradient(135deg,rgba(56,189,248,.28),rgba(168,85,247,.28));border-color:#38BDF8;color:#FFFFFF}
+.ci-paso button{border:2px solid rgba(255,255,255,.35);background:transparent;color:#FFFFFF}
+.ci-paso .ci-valor{color:#F5F7FA}
+.ci-paso .ci-valor small{color:#9AA3B2}
 input.ci-salario{border-radius:14px}
-.ci-resultado{background:linear-gradient(125deg,#0B1736,#173A7D);border-radius:18px;box-shadow:0 16px 36px rgba(11,23,54,.35);padding:20px}
+.ci-resultado{background:linear-gradient(135deg,#0B1020,#312E81);border:1px solid rgba(255,255,255,.10);border-radius:18px;box-shadow:0 16px 36px rgba(0,0,0,.5);padding:20px}
 .ci-resultado .ci-neto{font-size:40px;letter-spacing:-.01em}
 /* Instrucciones y términos */
 #instrucciones ol{margin:8px 0 4px;padding-left:22px;line-height:1.65}
 #instrucciones li{margin-bottom:7px}
-#terminos summary{font-size:16.5px}
-#terminos p{line-height:1.6;color:#33456B}
-/* Secciones desplegables con botón (instrucciones, vigilantes, términos) */
-#instrucciones-tarjeta>details>summary, #vigilantes>details>summary, #terminos-tarjeta>details>summary{font-size:19px;font-weight:800;color:#0B1736;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
-#instrucciones-tarjeta>details>summary::-webkit-details-marker, #vigilantes>details>summary::-webkit-details-marker, #terminos-tarjeta>details>summary::-webkit-details-marker{display:none}
-#instrucciones-tarjeta>details>summary::after, #vigilantes>details>summary::after, #terminos-tarjeta>details>summary::after{content:"Abrir ▾";flex:none;font-size:12.5px;font-weight:700;color:#2563EB;background:#EAF1FE;padding:6px 12px;border-radius:999px}
-#instrucciones-tarjeta>details[open ]>summary::after, #vigilantes>details[open ]>summary::after, #terminos-tarjeta>details[open ]>summary::after{content:"Cerrar ▴"}
-/* Derechos por oficio y comentarios */
+#terminos p{line-height:1.6;color:#A8AEBD}
+/* ===== Acordeones animados con iconos por oficio (estructura v2, piel oscura) ===== */
+.acordeon-btn{width:100%;display:flex;align-items:center;gap:14px;background:none;border:none;padding:2px 0;cursor:pointer;text-align:left;font-family:inherit}
+.acordeon-titulo{font-family:'Sora','Inter',sans-serif;font-size:19px;font-weight:700;color:#F5F7FA;letter-spacing:-.01em;flex:1;line-height:1.3}
+.icono-oficio{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex:none;box-shadow:0 8px 18px rgba(0,0,0,.4)}
+.icono-oficio svg{width:25px;height:25px}
+.ico-pasos{background:linear-gradient(135deg,#06B6D4,#0284C7)}
+.ico-vigilante{background:linear-gradient(135deg,#38BDF8,#2563EB)}
+.ico-domestica{background:linear-gradient(135deg,#F43F5E,#BE123C)}
+.ico-conserje{background:linear-gradient(135deg,#F59E0B,#D97706)}
+.ico-terminos{background:linear-gradient(135deg,#8B5CF6,#6D28D9)}
+.ico-comentarios{background:linear-gradient(135deg,#22C55E,#15803D)}
+.acordeon-flecha{flex:none;display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:#FFFFFF;background:transparent;border:1px solid rgba(255,255,255,.28);padding:7px 12px;border-radius:999px;transition:background .2s,color .2s}
+.acordeon-flecha svg{width:14px;height:14px;transition:transform .35s}
+.acordeon-flecha .f-cerrar{display:none}
+.acordeon.abierto>.acordeon-btn .acordeon-flecha{background:#FFFFFF;color:#0A0A0F;border-color:#FFFFFF}
+.acordeon.abierto>.acordeon-btn .acordeon-flecha svg{transform:rotate(180deg)}
+.acordeon.abierto>.acordeon-btn .f-abrir{display:none}
+.acordeon.abierto>.acordeon-btn .f-cerrar{display:inline}
+.acordeon-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1)}
+.acordeon-contenido{overflow:hidden;min-height:0}
+.acordeon.abierto>.acordeon-panel{grid-template-rows:1fr}
+.acordeon-contenido>p:first-child{margin-top:14px}
+.tarjeta-titulo{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.tarjeta-titulo h2{margin:0}
+/* Leyes numeradas */
+.leyes{counter-reset:ley}
+.leyes h3{display:flex;gap:11px;align-items:flex-start;margin-top:20px}
+.leyes h3::before{counter-increment:ley;content:counter(ley);flex:none;width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,#38BDF8,#8B5CF6);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;box-shadow:0 5px 12px rgba(56,189,248,.30)}
+.leyes p{margin-left:37px}
 #vigilantes h3{margin-top:18px}
-#vigilantes details{margin-top:14px;border-top:1px solid #E3EBF9;padding-top:12px}
-#vigilantes summary{font-size:16.5px;color:#0B1736}
+/* Mini acordeones por oficio */
+.acordeon-mini{margin-top:16px;border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:13px 15px;background:rgba(255,255,255,.03)}
+.acordeon-mini .icono-oficio{width:37px;height:37px;border-radius:11px}
+.acordeon-mini .icono-oficio svg{width:21px;height:21px}
+.acordeon-mini .acordeon-titulo{font-size:16.5px}
 #vigilantes p{line-height:1.6}
 #comentarios textarea{min-height:110px}
-/* Pie y flotante */
-.adr-pie{background:linear-gradient(180deg,#0B1736,#081026);color:#C3D4F2;text-align:center;padding:30px 16px 38px;margin-top:10px}
+/* Aparición suave al bajar */
+.revelar{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s ease}
+.revelar.visible{opacity:1;transform:none}
+/* Tarjetas y botones con vida */
+@media (hover:hover){.tarjeta{transition:transform .25s ease,box-shadow .25s ease}.tarjeta:hover{transform:translateY(-3px);box-shadow:0 22px 48px rgba(0,0,0,.55)}}
+button.accion{transition:transform .15s,box-shadow .15s,filter .15s}
+button.accion:hover{transform:translateY(-2px);filter:brightness(1.07)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.revelar{opacity:1;transform:none}}
+/* Pie */
+.adr-pie{background:linear-gradient(180deg,#070812,#05060A);color:#9AA3B2;text-align:center;padding:30px 16px 38px;margin-top:10px;border-top:1px solid rgba(255,255,255,.08)}
 .adr-pie-marca{font-size:18px;color:#fff;margin:0 0 8px}
-.adr-pie-marca b{color:#2DD4E1}
-.adr-pie a{color:#7DEFF7;font-weight:700}
+.adr-pie-marca b{color:#38BDF8}
+.adr-pie a{color:#38BDF8;font-weight:700}
 .adr-pie-links{font-size:14px}
 .adr-pie-nota{font-size:12.5px;opacity:.75;max-width:640px;margin:10px auto 0;line-height:1.55}
+/* ===== Escena del héroe: la calculadora flotando en 3D ===== */
+.adr-escena{position:absolute;inset:0;z-index:0;pointer-events:none;transition:transform .35s ease-out}
+.panel-3d{position:absolute;background:rgba(13,19,38,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);border-radius:16px;box-shadow:0 24px 48px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12);padding:12px 14px;color:#E8ECF4;animation:flotarPanel 8s ease-in-out infinite alternate}
+.panel-tit{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9AA3B2;margin-bottom:8px}
+.panel-cal{left:2.5%;top:104px;width:196px}
+.panel-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.panel-cal-grid span{height:14px;border-radius:4px;background:rgba(255,255,255,.07)}
+.panel-cal-grid span.d{background:#A9DFB8}
+.panel-cal-grid span.n{background:#2F4A8A}
+.panel-cal-grid span.r{background:#C9E4F6}
+.panel-cal-grid span.i{background:#FFC98A}
+.panel-leyenda{display:flex;gap:10px;margin-top:8px;font-size:10px;color:#9AA3B2}
+.panel-leyenda i{display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:4px}
+.panel-leyenda i.d{background:#A9DFB8}.panel-leyenda i.n{background:#2F4A8A}.panel-leyenda i.r{background:#C9E4F6}
+.panel-recibo{right:2.5%;top:96px;width:216px;animation-duration:10s}
+.fila-recibo{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.fila-recibo b{color:#4ADE80}
+.panel-total{margin-top:9px;font-size:12px;font-weight:800;color:#FFFFFF;background:linear-gradient(90deg,rgba(56,189,248,.25),rgba(168,85,247,.25));border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:6px 9px;text-align:center}
+.panel-marcas{right:2%;bottom:16px;display:flex;gap:7px;animation-duration:7s}
+.panel-marcas span{font-size:11.5px;font-weight:700;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px}
+@keyframes flotarPanel{from{transform:rotate(var(--rot,0deg)) translateY(0)}to{transform:rotate(var(--rot,0deg)) translateY(-13px)}}
+@media(max-width:1060px){.adr-escena{display:none}}
+/* Título con degradado vivo y entrada escalonada de las píldoras */
+header h1 .grad{background-size:200% 100%;animation:brilloGrad 7s ease-in-out infinite alternate}
+@keyframes brilloGrad{from{background-position:0% 0}to{background-position:100% 0}}
+.adr-confianza span{animation:aparecer .7s ease both}
+.adr-confianza span:nth-child(2){animation-delay:.1s}
+.adr-confianza span:nth-child(3){animation-delay:.2s}
+.adr-confianza span:nth-child(4){animation-delay:.3s}
+@keyframes aparecer{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+/* ===== Botones con relieve 3D ===== */
+button.accion{box-shadow:0 14px 30px rgba(255,255,255,.16),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -3px 0 rgba(10,10,15,.10)}
+button.accion:hover{transform:translateY(-3px) scale(1.015)}
+button.accion:active{transform:translateY(0) scale(.98)}
+.rapido-btn,.ci-boton{box-shadow:0 8px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+.rapido-btn:hover,.ci-boton:hover{transform:translateY(-3px)}
+.rapido-btn:active,.ci-boton:active{transform:translateY(0) scale(.98)}
+/* ===== Cristal líquido (pin de referencia): brillo especular arriba,
+   núcleo de cristal y halo de luz del color propio de cada botón ===== */
+button.accion{position:relative;overflow:hidden;box-shadow:0 18px 34px rgba(0,0,0,.45),0 0 28px rgba(255,255,255,.20),inset 0 2px 2px rgba(255,255,255,1),inset 0 -4px 8px rgba(10,10,15,.12)}
+button.accion::before{content:"";position:absolute;left:5%;right:5%;top:2px;height:46%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,0));pointer-events:none}
+.rapido-btn,.ci-boton,nav button{position:relative;overflow:hidden}
+.rapido-btn::before,.ci-boton::before,nav button::before{content:"";position:absolute;left:5%;right:5%;top:2px;height:46%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0));pointer-events:none}
+nav button.activo{box-shadow:0 10px 24px rgba(0,0,0,.4),0 0 22px rgba(255,255,255,.25)}
+.rapido-btn.activo{box-shadow:0 12px 26px rgba(0,0,0,.45),0 0 24px rgba(56,189,248,.45)}
+.rapido-btn[data-modo-rapido="trabajado"].activo{box-shadow:0 12px 26px rgba(0,0,0,.45),0 0 24px rgba(74,222,128,.50)}
+.rapido-btn[data-modo-rapido="descanso"].activo{box-shadow:0 12px 26px rgba(0,0,0,.45),0 0 24px rgba(56,189,248,.50)}
+.rapido-btn[data-modo-rapido="incapacidad_general"].activo{box-shadow:0 12px 26px rgba(0,0,0,.45),0 0 24px rgba(255,201,77,.55)}
+.rapido-btn[data-modo-rapido="incapacidad_arl"].activo{box-shadow:0 12px 26px rgba(0,0,0,.45),0 0 24px rgba(248,113,113,.55)}
+.rapido-btn[data-modo-rapido="borrar"].activo{box-shadow:0 12px 26px rgba(0,0,0,.45),0 0 24px rgba(248,113,113,.50)}
+.ci-boton.activo{box-shadow:0 12px 26px rgba(0,0,0,.45),0 0 26px rgba(139,92,246,.55)}
+.acordeon.abierto>.acordeon-btn .acordeon-flecha{box-shadow:0 8px 20px rgba(0,0,0,.4),0 0 18px rgba(255,255,255,.25)}
+.cal-dia{transition:transform .15s,box-shadow .15s}
+.cal-dia:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(0,0,0,.4)}
 /* La sección de valores por año es solo de administración: no se muestra en la web */
 #cfg-tarjeta{display:none!important}
-</style>
-</head>
+</style></head>
 <body>
 <!-- ============================================================
      Calcula tu Nómina (proyecto independiente)
@@ -182,9 +301,9 @@ input.ci-salario{border-radius:14px}
      este dispositivo (localStorage, clave propia).
      ============================================================ -->
 <header><div class="adr-marca"><img src="data:image/png;base64,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" alt="Logotipo de ADR Software"><span class="adr-marca-nombre">ADR <b>Software</b></span></div>
-  <h1>🧮 Calcula tu Nómina</h1>
+  <h1>🧮 Calcula tu <span class="grad">Nómina</span></h1>
   <p>Solo marca tus días: ella calcula tu quincena o tu mes por ley.</p>
-<div class="adr-confianza"><span>✓ 100% gratis</span><span>✓ Sin registro</span><span>✓ Por ley, actualizada cada año</span><span>✓ Tus datos no salen de tu equipo</span></div></header>
+<div class="adr-confianza"><span>✓ 100% gratis</span><span>✓ Sin registro</span><span>✓ Por ley, actualizada cada año</span><span>✓ Tus datos no salen de tu equipo</span></div><div class="adr-escena" aria-hidden="true"><div class="panel-3d panel-cal" style="--rot:-6deg"><div class="panel-tit">noviembre · tus días</div><div class="panel-cal-grid"><span class=""></span><span class="d"></span><span class="d"></span><span class=""></span><span class="n"></span><span class=""></span><span class=""></span><span class=""></span><span class="d"></span><span class="r"></span><span class=""></span><span class="n"></span><span class="d"></span><span class=""></span><span class=""></span><span class="d"></span><span class="i"></span><span class=""></span><span class="n"></span><span class=""></span><span class=""></span><span class=""></span><span class="d"></span><span class="r"></span><span class=""></span><span class="d"></span><span class="n"></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div><div class="panel-leyenda"><span><i class="d"></i>Día</span><span><i class="n"></i>Noche</span><span><i class="r"></i>Descanso</span></div></div><div class="panel-3d panel-recibo" style="--rot:5deg"><div class="panel-tit">Tu quincena</div><div class="fila-recibo"><span>Días marcados</span><b>✓</b></div><div class="fila-recibo"><span>Recargos por ley</span><b>✓</b></div><div class="fila-recibo"><span>Auxilio, salud y pensión</span><b>✓</b></div><div class="panel-total">Calculado por ley ✓</div></div><div class="panel-3d panel-marcas" style="--rot:-3deg"><span>☀️ Día</span><span>🌙 Noche</span><span>😴 Descanso</span></div></div></header>
 <main>
 <section id="vista-inicio" class="vista activa">
   <div class="tarjeta">
@@ -241,9 +360,13 @@ input.ci-salario{border-radius:14px}
   </div>
 </section>
 
-<div class="tarjeta" id="instrucciones-tarjeta">
-  <details>
-  <summary>📖 Cómo usarla — en 5 pasos</summary>
+<div class="tarjeta acordeon revelar" id="instrucciones">
+  <button type="button" class="acordeon-btn" data-acordeon aria-expanded="false">
+    <span class="icono-oficio ico-pasos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.2C10.2 4.8 8 4.2 5.5 4.2v13c2.5 0 4.7.6 6.5 2 1.8-1.4 4-2 6.5-2v-13c-2.5 0-4.7.6-6.5 2z"/><path d="M12 6.2v13"/></svg></span>
+    <span class="acordeon-titulo">Cómo usarla — en 5 pasos</span>
+    <span class="acordeon-flecha"><span class="f-abrir">Abrir</span><span class="f-cerrar">Cerrar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+  </button>
+  <div class="acordeon-panel"><div class="acordeon-contenido">
   <ol style="font-size:16.5px;line-height:1.7;text-align:left;padding-left:22px">
     <li><strong>Escribe tu salario</strong> de un mes completo. Si ganas el mínimo, toca el botón «poner el salario mínimo de este año» y listo.</li>
     <li><strong>Elige qué pago quieres calcular</strong>: QUINCENA 1 (días 1 al 15), QUINCENA 2 (día 16 a fin de mes) o MES completo. Con las flechas «Mes anterior / Mes siguiente» te mueves de mes.</li>
@@ -252,39 +375,57 @@ input.ci-salario{border-radius:14px}
     <li><strong>Mira tu resultado</strong> en «💰 LO QUE TE DEBE LLEGAR». Para ver el porqué completo, descarga el <strong>reporte en Excel</strong> o abre el detalle día por día: ese es tu sustento si tienes que reclamar tu pago.</li>
   </ol>
   <p class="peq"><strong>¿No te coincide con lo que te pagaron?</strong> Revisa primero tres cosas: que tu salario esté bien escrito, que las horas de tus turnos sean las tuyas y que <strong>todos</strong> los días del periodo estén marcados.</p>
-  </details>
+  </div></div>
 </div>
 
-<div class="tarjeta" id="vigilantes">
-<details>
-<summary>🛡️ Artículos que aplican para los vigilantes</summary>
+<div class="tarjeta acordeon revelar" id="vigilantes">
+  <button type="button" class="acordeon-btn" data-acordeon aria-expanded="false">
+    <span class="icono-oficio ico-vigilante"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 2.6V11c0 4.6-3 7.7-7 9.2C8 18.7 5 15.6 5 11V5.6L12 3z"/><path d="M9.2 11.6l2.1 2.1 3.6-4"/></svg></span>
+    <span class="acordeon-titulo">Artículos que aplican para los vigilantes</span>
+    <span class="acordeon-flecha"><span class="f-abrir">Abrir</span><span class="f-cerrar">Cerrar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+  </button>
+  <div class="acordeon-panel"><div class="acordeon-contenido">
 <p>Si eres vigilante y tu empleador te cita artículos para pagarte menos, estos son los que <strong>sí existen</strong> y lo que dicen, en palabras claras. Compáralos: si el artículo que te mencionan no está aquí, desconfía.</p>
-<h3>1. Ley 1920 de 2018, artículo 7 — la «Ley del Vigilante»</h3>
+<div class="leyes">
+<h3>Ley 1920 de 2018, artículo 7 — la «Ley del Vigilante»</h3>
 <p>Puedes trabajar turnos de hasta <strong>12 horas al día</strong> y máximo <strong>60 horas a la semana</strong>, pero solo si hay un <strong>acuerdo firmado por ti y por tu empleador</strong>. Sin ese papel firmado, tu tope de horas extras es el de cualquier trabajador: 2 al día.</p>
-<h3>2. El turno de 12 horas NO elimina las extras</h3>
+<h3>El turno de 12 horas NO elimina las extras</h3>
 <p>El Ministerio del Trabajo lo aclaró en la <strong>Circular 079 de 2023</strong> (y lo repitió en la Circular 0040 de 2026): el turno de 12 horas se compone de jornada ordinaria <strong>más</strong> horas extras. Todo lo que pase de tu jornada ordinaria se paga como hora extra, con su recargo. Nadie te puede decir que «por ser vigilante, las 12 horas son ordinarias».</p>
-<h3>3. Ley 2101 de 2021 — la reducción también es tuya</h3>
+<h3>Ley 2101 de 2021 — la reducción también es tuya</h3>
 <p>Desde el 15 de julio de 2026 la jornada ordinaria de todos, incluida la tuya, es de <strong>42 horas semanales</strong>, sin que te puedan bajar el salario. Lo que trabajes por encima de esas 42 horas en la semana es trabajo extra.</p>
-<h3>4. Tus recargos son los mismos de todos</h3>
+<h3>Tus recargos son los mismos de todos</h3>
 <p>Por el Código Sustantivo del Trabajo y la Ley 2466 de 2025: recargo nocturno <strong>35%</strong> (la noche empieza a las <strong>7:00 p. m.</strong>), hora extra diurna <strong>+25%</strong>, hora extra nocturna <strong>+75%</strong>, y domingo o festivo <strong>90%</strong> en 2026 (será 100% desde julio de 2027). Tu <strong>día de descanso semanal es obligatorio</strong>: nadie te lo puede quitar.</p>
-<h3>5. ¿A quién cubre la regla de las 12 horas?</h3>
+<h3>¿A quién cubre la regla de las 12 horas?</h3>
 <p>Solo al personal de empresas o cooperativas de vigilancia <strong>autorizadas por la Superintendencia de Vigilancia y Seguridad Privada</strong>. Si un conjunto o una empresa te contrató <strong>directamente</strong> como portero o celador, te rige el régimen general completo. La única excepción del Código (artículo 162) exige que vivas en el sitio de trabajo: si te vas a tu casa al terminar el turno, esa excepción no te aplica.</p>
-<details>
-<summary>🧹 Si eres empleada o empleado doméstico</summary>
+</div>
+<div class="acordeon acordeon-mini">
+  <button type="button" class="acordeon-btn" data-acordeon aria-expanded="false">
+    <span class="icono-oficio ico-domestica"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.2L12 4l8 7.2"/><path d="M6.2 9.6V20h11.6V9.6"/><path d="M12 16.4s-2.4-1.6-2.4-3c0-.8.6-1.4 1.3-1.4.5 0 .9.3 1.1.6.2-.3.6-.6 1.1-.6.7 0 1.3.6 1.3 1.4 0 1.4-2.4 3-2.4 3z"/></svg></span>
+    <span class="acordeon-titulo">Si eres empleada o empleado doméstico</span>
+    <span class="acordeon-flecha"><span class="f-abrir">Abrir</span><span class="f-cerrar">Cerrar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+  </button>
+  <div class="acordeon-panel"><div class="acordeon-contenido">
 <p><strong>Tienes los mismos derechos que cualquier trabajador.</strong> La reforma laboral (Ley 2466 de 2025) eliminó la vieja excepción que dejaba al servicio doméstico por fuera de la jornada máxima: hoy tu jornada máxima es la legal, <strong>42 horas semanales</strong>, con horas extras (máximo 2 al día), recargo nocturno y dominical.</p>
 <p>Tu contrato debe ser <strong>escrito</strong> y estar registrado en la planilla PILA (artículo 33 de la Ley 2466). Pero ojo: si no te lo dieron por escrito, <strong>tus derechos existen igual</strong>.</p>
 <p>También tienes: <strong>prima de servicios</strong> en junio y diciembre desde la Ley 1788 de 2016 — también si trabajas <strong>por días</strong>, en forma proporcional —; <strong>cesantías</strong> de un mes de salario por año (la antigua regla de cesantía reducida ya no existe) y <strong>vacaciones</strong> de 15 días hábiles por año.</p>
 <p>Si trabajas por días, tu empleador debe cotizar tu seguridad social <strong>por semanas</strong> (Decreto 2616 de 2013): trabajar por días reduce las cuentas a proporción, nunca tus derechos. Y si vives en la casa donde trabajas, la parte del salario pagada en especie (comida y habitación) tiene tope: máximo el <strong>30%</strong> si ganas el salario mínimo (artículo 129 del Código Sustantivo del Trabajo).</p>
-</details>
-<details>
-<summary>🧰 Si eres conserje</summary>
+  </div></div>
+</div>
+<div class="acordeon acordeon-mini">
+  <button type="button" class="acordeon-btn" data-acordeon aria-expanded="false">
+    <span class="icono-oficio ico-conserje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="14.5" r="4.3"/><path d="M11.2 11.3L19.5 3"/><path d="M16.8 5.7l2.4 2.4"/><path d="M14.2 8.3l2.4 2.4"/></svg></span>
+    <span class="acordeon-titulo">Si eres conserje</span>
+    <span class="acordeon-flecha"><span class="f-abrir">Abrir</span><span class="f-cerrar">Cerrar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+  </button>
+  <div class="acordeon-panel"><div class="acordeon-contenido">
 <p><strong>No eres vigilante ante la ley:</strong> la regla de los turnos de 12 horas (Ley 1920) es solo para el personal de empresas de vigilancia autorizadas. A ti te rige el régimen general: jornada máxima de 42 horas semanales y horas extras pagadas con recargo.</p>
 <p>El artículo que más te citan es el <strong>162 del Código Sustantivo del Trabajo</strong>, que excluye de la jornada máxima a los de «simple vigilancia» <strong>que residan en el sitio de trabajo</strong>. La excepción exige las dos cosas a la vez. Si tu trabajo es activo —limpiar, hacer mantenimiento, atender residentes— eso <strong>no</strong> es «simple vigilancia», así vivas en el edificio. Y si no vives ahí, la excepción no aplica de ninguna manera.</p>
 <p>Conclusión: si trabajas más allá de la jornada máxima, te deben las extras como a cualquier trabajador.</p>
-</details>
+  </div></div>
+</div>
 <h3>¿Te salieron con un artículo raro?</h3>
 <p>Pide que te lo muestren <strong>por escrito</strong> y compáralo con esta lista. Y si quieres, cuéntanos tu caso en la sección de <a href="#comentarios">comentarios</a> de esta misma página: te ayudamos a revisar tu cuenta con esta calculadora.</p>
-</details>
+  </div></div>
 </div>
 
 <div class="tarjeta" id="cfg-tarjeta">
@@ -868,9 +1009,13 @@ catch(err){
   document.body.insertBefore(aviso,document.body.firstChild);
 }
 </script>
-<div class="tarjeta" id="terminos-tarjeta">
-  <details>
-    <summary style="font-size:19px;font-weight:800;cursor:pointer">⚖️ Términos y condiciones de uso</summary>
+<div class="tarjeta acordeon revelar" id="terminos">
+  <button type="button" class="acordeon-btn" data-acordeon aria-expanded="false">
+    <span class="icono-oficio ico-terminos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M8.5 20h7"/><path d="M12 6.5h7"/><path d="M12 6.5H5"/><path d="M5 6.5L2.8 12h4.4L5 6.5z"/><path d="M19 6.5L16.8 12h4.4L19 6.5z"/><path d="M3.4 14.6a2.6 2.6 0 0 0 3.2 0"/><path d="M17.4 14.6a2.6 2.6 0 0 0 3.2 0"/></svg></span>
+    <span class="acordeon-titulo">Términos y condiciones de uso</span>
+    <span class="acordeon-flecha"><span class="f-abrir">Abrir</span><span class="f-cerrar">Cerrar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+  </button>
+  <div class="acordeon-panel"><div class="acordeon-contenido">
     <div style="font-size:14.5px;line-height:1.65;margin-top:10px;text-align:left">
       <p><strong>Al usar esta página aceptas estos términos.</strong></p>
       <p><strong>1. Qué es.</strong> «Calcula tu Nómina» es una herramienta gratuita de ADR Software para estimar y verificar tu pago (quincena o mes) con los valores de ley cargados en la página. Es un cálculo de ayuda y de referencia.</p>
@@ -882,11 +1027,11 @@ catch(err){
       <p><strong>7. Cambios.</strong> Podemos actualizar la herramienta y estos términos; la versión vigente es la publicada en esta página.</p>
       <p><strong>8. Ley y contacto.</strong> Estos términos se rigen por las leyes de la República de Colombia. Para cualquier comunicación sobre esta herramienta, usa la sección de <a href="#comentarios">comentarios</a> de esta misma página.</p>
     </div>
-  </details>
+  </div></div>
 </div>
 
-<div class="tarjeta" id="comentarios">
-<h2>💬 Déjanos tus comentarios</h2>
+<div class="tarjeta revelar" id="comentarios">
+<div class="tarjeta-titulo"><span class="icono-oficio ico-comentarios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4c4.97 0 9 3.58 9 8s-4.03 8-9 8c-1.05 0-2.06-.18-3-.5L4 20.5l1.2-3.2C3.9 15.8 3 14 3 12c0-4.42 4.03-8 9-8z"/><path d="M8.2 12h.01M12 12h.01M15.8 12h.01" stroke-width="2.6"/></svg></span><h2>Déjanos tus comentarios</h2></div>
 <p>¿Tienes una duda con tu nómina, un caso con tu empleador o una pregunta sobre cómo usar la calculadora? Escríbenos aquí: tu comentario nos llega directo y lo leemos para ayudarte a revisar tu caso.</p>
 <form id="form-comentarios">
 <label for="com-nombre">Tu nombre (opcional)</label>
@@ -945,5 +1090,11 @@ document.getElementById('form-comentarios').addEventListener('submit', function 
 <p class="adr-pie-links"><a href="#instrucciones">Cómo usarla</a> · <a href="#vigilantes">Artículos para vigilantes</a> · <a href="#terminos">Términos y condiciones</a> · <a href="#comentarios">Comentarios</a></p>
 <p class="adr-pie-nota">Calcula tu Nómina es una herramienta de referencia. La liquidación oficial la define tu empleador o la entidad competente.</p>
 </footer>
+<script>
+document.querySelectorAll('[data-acordeon]').forEach(function(b){b.addEventListener('click',function(){var c=b.closest('.acordeon');var abierto=c.classList.toggle('abierto');b.setAttribute('aria-expanded',abierto);});});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.06});document.querySelectorAll('.revelar').forEach(function(el){io.observe(el);});}else{document.querySelectorAll('.revelar').forEach(function(el){el.classList.add('visible');});}
+(function(){var fino=window.matchMedia('(pointer:fine)').matches;var reducido=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(!fino||reducido)return;var cab=document.querySelector('header');var escena=document.querySelector('.adr-escena');if(cab&&escena){cab.addEventListener('pointermove',function(e){var r=cab.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5;var y=(e.clientY-r.top)/r.height-.5;escena.style.transform='perspective(950px) rotateY('+(x*7).toFixed(2)+'deg) rotateX('+(-y*7).toFixed(2)+'deg)';});cab.addEventListener('pointerleave',function(){escena.style.transform='';});}
+document.querySelectorAll('button.accion').forEach(function(b){b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5;var y=(e.clientY-r.top)/r.height-.5;b.style.transform='perspective(600px) rotateY('+(x*8).toFixed(2)+'deg) rotateX('+(-y*8).toFixed(2)+'deg) translateY(-3px)';});b.addEventListener('pointerleave',function(){b.style.transform='';});});})();
+</script>
 </body>
 </html>
