@@ -54,17 +54,19 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .cal-dia.vacio{opacity:.3;cursor:default}
 .cal-dia.sel{outline:3px solid var(--verde2);outline-offset:-1px}
 .cal-dia.sin-registro{color:var(--gris)}
-.cal-dia.marcado-trabajado{background:#e6f4ea;border-color:#7fb98e}
-.cal-dia.marcado-descanso{background:#e8edf5;border-color:#9db2cc}
-.cal-dia.marcado-incapacidad{background:#fde8e0;border-color:#e0a08a}
-.cal-dia.marcado-noche{background:#dfe6f5;border-color:#5b74a8}
+.cal-dia.marcado-trabajado{background:#a9dfb8;border-color:#1e9e50}
+.cal-dia.marcado-descanso{background:#c9e4f6;border-color:#5b9bd5}
+.cal-dia.marcado-incapacidad{background:#ffc98a;border-color:#e07b24}
+.cal-dia.marcado-incapacidad-arl{background:#f6a8a8;border-color:#d63a3a}
+.cal-dia.marcado-noche{background:#2f4a8a;border-color:#1d2f57;color:#fff}
 .rapido-botones{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
 @media(max-width:640px){.rapido-botones{grid-template-columns:repeat(2,1fr)}}
 .rapido-btn{padding:14px 8px;border:2px solid var(--borde);border-radius:12px;background:#fff;font-size:15px;font-weight:700;cursor:pointer;color:#12211a}
 .rapido-btn.activo{border-color:var(--verde);background:#ffc94d}
 .rapido-btn[data-modo-rapido="trabajado"].activo{background:#bfe6c8}
 .rapido-btn[data-modo-rapido="descanso"].activo{background:#ccd9ec}
-.rapido-btn[data-modo-rapido="incapacidad_general"].activo,.rapido-btn[data-modo-rapido="incapacidad_arl"].activo{background:#f6c9b8}
+.rapido-btn[data-modo-rapido="incapacidad_general"].activo{background:#ffc98a}
+.rapido-btn[data-modo-rapido="incapacidad_arl"].activo{background:#f6a8a8}
 .rapido-btn[data-modo-rapido="borrar"].activo{background:#f2b8b2}
 .ci-pregunta{font-size:19px;font-weight:800;color:var(--verde);margin:18px 0 8px}
 .ci-botones{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -128,7 +130,8 @@ summary{color:#0B1736}
 .rapido-btn.activo{border-color:#2563EB;background:#CFE1FF}
 .rapido-btn[data-modo-rapido="trabajado"].activo{background:#BFE6C8;border-color:#15803D}
 .rapido-btn[data-modo-rapido="descanso"].activo{background:#CCD9EC;border-color:#3D5A99}
-.rapido-btn[data-modo-rapido="incapacidad_general"].activo,.rapido-btn[data-modo-rapido="incapacidad_arl"].activo{background:#F6C9B8;border-color:#C25E3A}
+.rapido-btn[data-modo-rapido="incapacidad_general"].activo{background:#FFC98A;border-color:#E07B24}
+.rapido-btn[data-modo-rapido="incapacidad_arl"].activo{background:#F6A8A8;border-color:#D63A3A}
 .rapido-btn[data-modo-rapido="borrar"].activo{background:#F2B8B2;border-color:#B42318}
 .cal-dia{border-radius:12px;border-color:#D7E1F2}
 .cal-dia.sel{outline:3px solid #2563EB}
@@ -214,7 +217,7 @@ input.ci-salario{border-radius:14px}
     <div id="ci-modo-estado" class="okcaja">Marca actual: <strong>Trabajé de DÍA</strong>. Toca los días del calendario.</div>
     <div class="cal-cab"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
     <div class="cal-grid" id="ci-grid"></div>
-    <p class="peq">Verde: trabajaste de día · Azul oscuro: trabajaste de noche · Azul claro: descanso · Naranja: incapacidad. Fondo amarillo: domingo · Fondo rosado: festivo. Tus marcas quedan <strong>guardadas en este celular</strong>. Con el botón <strong>🎉 Festivo</strong> marcas o quitas los festivos de cualquier año tocando el día: sirve para ajustar los festivos de cualquier año.</p>
+    <p class="peq">Verde: trabajaste de día · Azul oscuro: trabajaste de noche · Celeste: descanso · Naranja: incapacidad general · Rojo: incapacidad ARL. Fondo amarillo: domingo · Fondo rosado: festivo. Tus marcas quedan <strong>guardadas en este celular</strong>. Con el botón <strong>🎉 Festivo</strong> marcas o quitas los festivos de cualquier año tocando el día: sirve para ajustar los festivos de cualquier año.</p>
     <div id="ci-aviso"></div>
     <div class="ci-resultado">
       <div>💰 LO QUE TE DEBE LLEGAR</div>
@@ -536,7 +539,7 @@ function renderCalendarioSimple(){
     const iso=isoDe(ciAnio,ciMesNum,dia);
     const m=cs.marcas[iso];
     const esDom=esDomingoISO(iso),esFes=esFestivoTabla(iso);
-    const clase=m==="trabajo_dia"?" marcado-trabajado":m==="trabajo_noche"?" marcado-noche":m==="descanso"?" marcado-descanso":(m==="incapacidad_general"||m==="incapacidad_arl")?" marcado-incapacidad":"";
+    const clase=m==="trabajo_dia"?" marcado-trabajado":m==="trabajo_noche"?" marcado-noche":m==="descanso"?" marcado-descanso":m==="incapacidad_general"?" marcado-incapacidad":m==="incapacidad_arl"?" marcado-incapacidad-arl":"";
     const etiqueta=m==="trabajo_dia"?"☀️ Trabajé":m==="trabajo_noche"?"🌙 Noche":m==="descanso"?"😴 Descanso":m==="incapacidad_general"?"🏥 Incapacidad":m==="incapacidad_arl"?"🚑 Inc. ARL":"";
     html+='<div class="cal-dia'+(esDom?" domingo":"")+(esFes?" festivo":"")+clase+(m?"":" sin-registro")+'" data-ci-fecha="'+iso+'"><span class="num">'+dia+"</span>"+
       (esFes?' <span class="etiqueta pendiente">Festivo</span>':"")+"<br>"+
