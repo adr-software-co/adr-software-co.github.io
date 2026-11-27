@@ -92,7 +92,7 @@ input.ci-salario{font-size:24px;font-weight:800;text-align:center;padding:14px}
 details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointer}
 .scroll-x{overflow-x:auto}
 </style>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.web3forms.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,6 +150,11 @@ input.ci-salario{border-radius:14px}
 #instrucciones li{margin-bottom:7px}
 #terminos summary{font-size:16.5px}
 #terminos p{line-height:1.6;color:#33456B}
+/* Secciones desplegables con botón (instrucciones, vigilantes, términos) */
+#instrucciones-tarjeta>details>summary, #vigilantes>details>summary, #terminos-tarjeta>details>summary{font-size:19px;font-weight:800;color:#0B1736;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+#instrucciones-tarjeta>details>summary::-webkit-details-marker, #vigilantes>details>summary::-webkit-details-marker, #terminos-tarjeta>details>summary::-webkit-details-marker{display:none}
+#instrucciones-tarjeta>details>summary::after, #vigilantes>details>summary::after, #terminos-tarjeta>details>summary::after{content:"Abrir ▾";flex:none;font-size:12.5px;font-weight:700;color:#2563EB;background:#EAF1FE;padding:6px 12px;border-radius:999px}
+#instrucciones-tarjeta>details[open ]>summary::after, #vigilantes>details[open ]>summary::after, #terminos-tarjeta>details[open ]>summary::after{content:"Cerrar ▴"}
 /* Derechos por oficio y comentarios */
 #vigilantes h3{margin-top:18px}
 #vigilantes details{margin-top:14px;border-top:1px solid #E3EBF9;padding-top:12px}
@@ -237,7 +242,8 @@ input.ci-salario{border-radius:14px}
 </section>
 
 <div class="tarjeta" id="instrucciones-tarjeta">
-  <h2>📖 Cómo usarla — en 5 pasos</h2>
+  <details>
+  <summary>📖 Cómo usarla — en 5 pasos</summary>
   <ol style="font-size:16.5px;line-height:1.7;text-align:left;padding-left:22px">
     <li><strong>Escribe tu salario</strong> de un mes completo. Si ganas el mínimo, toca el botón «poner el salario mínimo de este año» y listo.</li>
     <li><strong>Elige qué pago quieres calcular</strong>: QUINCENA 1 (días 1 al 15), QUINCENA 2 (día 16 a fin de mes) o MES completo. Con las flechas «Mes anterior / Mes siguiente» te mueves de mes.</li>
@@ -246,10 +252,12 @@ input.ci-salario{border-radius:14px}
     <li><strong>Mira tu resultado</strong> en «💰 LO QUE TE DEBE LLEGAR». Para ver el porqué completo, descarga el <strong>reporte en Excel</strong> o abre el detalle día por día: ese es tu sustento si tienes que reclamar tu pago.</li>
   </ol>
   <p class="peq"><strong>¿No te coincide con lo que te pagaron?</strong> Revisa primero tres cosas: que tu salario esté bien escrito, que las horas de tus turnos sean las tuyas y que <strong>todos</strong> los días del periodo estén marcados.</p>
+  </details>
 </div>
 
 <div class="tarjeta" id="vigilantes">
-<h2>🛡️ Artículos que aplican para los vigilantes</h2>
+<details>
+<summary>🛡️ Artículos que aplican para los vigilantes</summary>
 <p>Si eres vigilante y tu empleador te cita artículos para pagarte menos, estos son los que <strong>sí existen</strong> y lo que dicen, en palabras claras. Compáralos: si el artículo que te mencionan no está aquí, desconfía.</p>
 <h3>1. Ley 1920 de 2018, artículo 7 — la «Ley del Vigilante»</h3>
 <p>Puedes trabajar turnos de hasta <strong>12 horas al día</strong> y máximo <strong>60 horas a la semana</strong>, pero solo si hay un <strong>acuerdo firmado por ti y por tu empleador</strong>. Sin ese papel firmado, tu tope de horas extras es el de cualquier trabajador: 2 al día.</p>
@@ -276,6 +284,7 @@ input.ci-salario{border-radius:14px}
 </details>
 <h3>¿Te salieron con un artículo raro?</h3>
 <p>Pide que te lo muestren <strong>por escrito</strong> y compáralo con esta lista. Y si quieres, cuéntanos tu caso en la sección de <a href="#comentarios">comentarios</a> de esta misma página: te ayudamos a revisar tu cuenta con esta calculadora.</p>
+</details>
 </div>
 
 <div class="tarjeta" id="cfg-tarjeta">
@@ -878,24 +887,55 @@ catch(err){
 
 <div class="tarjeta" id="comentarios">
 <h2>💬 Déjanos tus comentarios</h2>
-<p>¿Tienes una duda con tu nómina, un caso con tu empleador o una pregunta sobre cómo usar la calculadora? Escríbenos aquí: tu comentario llega a nuestro WhatsApp y te ayudamos a revisar tu caso.</p>
+<p>¿Tienes una duda con tu nómina, un caso con tu empleador o una pregunta sobre cómo usar la calculadora? Escríbenos aquí: tu comentario nos llega directo y lo leemos para ayudarte a revisar tu caso.</p>
 <form id="form-comentarios">
 <label for="com-nombre">Tu nombre (opcional)</label>
 <input id="com-nombre" type="text" autocomplete="name" placeholder="Ej.: Carlos, vigilante en Bogotá">
+<label for="com-contacto">Tu correo o celular (opcional, solo si quieres que te respondamos)</label>
+<input id="com-contacto" type="text" autocomplete="email" placeholder="Ej.: tucorreo@ejemplo.com">
 <label for="com-texto">Tu comentario o duda</label>
 <textarea id="com-texto" required placeholder="Cuéntanos tu caso: qué te dijeron, qué te pagaron, qué quieres verificar…"></textarea>
-<button type="submit" class="accion">Enviar por WhatsApp</button>
+<input type="checkbox" name="botcheck" id="com-botcheck" style="display:none">
+<button type="submit" class="accion" id="com-enviar">Enviar comentario</button>
 </form>
-<p class="peq">Al enviar se abre WhatsApp con tu texto listo; solo tienes que tocar «Enviar» allá. Tu comentario no se publica en esta página.</p>
+<p class="peq" id="com-estado" role="status"></p>
+<p class="peq">Tu comentario no se publica en esta página y no compartimos tus datos con nadie.</p>
 </div>
 <script>
 document.getElementById('form-comentarios').addEventListener('submit', function (e) {
   e.preventDefault();
-  var n = document.getElementById('com-nombre').value.trim();
-  var t = document.getElementById('com-texto').value.trim();
-  if (!t) return;
-  var msg = 'Hola ADR Software, les escribo desde la página Calcula tu Nómina.' + (n ? ' Soy ' + n + '.' : '') + '\n\n' + t;
-  window.open('https://wa.me/573008844143?text=' + encodeURIComponent(msg), '_blank');
+  var estado = document.getElementById('com-estado');
+  var boton = document.getElementById('com-enviar');
+  var texto = document.getElementById('com-texto').value.trim();
+  if (!texto) { estado.textContent = 'Escribe primero tu comentario.'; return; }
+  boton.disabled = true;
+  boton.textContent = 'Enviando…';
+  estado.textContent = '';
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      access_key: '7f89b9c9-c417-4b5a-8a1b-33f174b5f5bf',
+      subject: 'Nuevo comentario en Calcula tu Nómina',
+      from_name: 'Página Calcula tu Nómina',
+      nombre: document.getElementById('com-nombre').value.trim(),
+      contacto_para_responder: document.getElementById('com-contacto').value.trim(),
+      comentario: texto,
+      botcheck: document.getElementById('com-botcheck').checked
+    })
+  }).then(function (r) { return r.json(); }).then(function (d) {
+    if (d.success) {
+      estado.textContent = '✅ ¡Gracias! Tu comentario fue enviado. Lo leeremos y, si nos dejaste un medio de contacto, te respondemos.';
+      document.getElementById('form-comentarios').reset();
+    } else {
+      estado.textContent = 'No se pudo enviar. Inténtalo de nuevo en un momento.';
+    }
+  }).catch(function () {
+    estado.textContent = 'No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.';
+  }).finally(function () {
+    boton.disabled = false;
+    boton.textContent = 'Enviar comentario';
+  });
 });
 </script>
 
