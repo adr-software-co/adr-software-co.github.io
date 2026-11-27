@@ -94,6 +94,7 @@ details{margin-top:10px}summary{font-weight:700;color:var(--verde);cursor:pointe
 </style>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.web3forms.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<script>(function(){try{if(localStorage.getItem('calcula-nomina-tema')==='claro'){document.documentElement.classList.add('tema-claro');}}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -193,6 +194,7 @@ input.ci-salario{border-radius:14px}
 .ico-domestica{background:linear-gradient(135deg,#F43F5E,#BE123C)}
 .ico-conserje{background:linear-gradient(135deg,#F59E0B,#D97706)}
 .ico-terminos{background:linear-gradient(135deg,#8B5CF6,#6D28D9)}
+.ico-normativa{background:linear-gradient(135deg,#0EA5E9,#6366F1)}
 .ico-comentarios{background:linear-gradient(135deg,#22C55E,#15803D)}
 .acordeon-flecha{flex:none;display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:#FFFFFF;background:transparent;border:1px solid rgba(255,255,255,.28);padding:7px 12px;border-radius:999px;transition:background .2s,color .2s}
 .acordeon-flecha svg{width:14px;height:14px;transition:transform .35s}
@@ -289,10 +291,68 @@ nav button.activo{box-shadow:0 10px 24px rgba(0,0,0,.4),0 0 22px rgba(255,255,25
 .acordeon.abierto>.acordeon-btn .acordeon-flecha{box-shadow:0 8px 20px rgba(0,0,0,.4),0 0 18px rgba(255,255,255,.25)}
 .cal-dia{transition:transform .15s,box-shadow .15s}
 .cal-dia:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(0,0,0,.4)}
+/* ===== Botón de tema y MODO CLARO (elección del visitante, se guarda) ===== */
+#tema-btn{position:fixed;top:12px;right:12px;z-index:80;padding:9px 15px;border-radius:999px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;background:rgba(13,19,38,.72);color:#FFFFFF;border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 24px rgba(0,0,0,.35)}
+html.tema-claro #tema-btn{background:rgba(255,255,255,.88);color:#0B1736;border-color:rgba(11,23,54,.22);box-shadow:0 10px 24px rgba(11,23,54,.18)}
+html.tema-claro body{background:radial-gradient(900px 520px at 12% -5%,rgba(37,99,235,.14) 0%,rgba(37,99,235,0) 60%),radial-gradient(820px 520px at 92% 0%,rgba(124,58,237,.10) 0%,rgba(124,58,237,0) 60%),linear-gradient(180deg,#DCE8FC 0,#EFF4FE 340px,#EDF2FB 100%);color:#1B2740}
+html.tema-claro header{background:linear-gradient(160deg,#FFFFFF 0%,#E9EFFC 60%,#DCE7FB 100%);box-shadow:0 14px 34px rgba(11,23,54,.14);border-bottom:1px solid rgba(11,23,54,.08)}
+html.tema-claro header h1{color:#0B1736}
+html.tema-claro header p{color:#54678C}
+html.tema-claro .adr-marca-nombre{color:#0B1736}
+html.tema-claro .adr-marca-nombre b{color:#0284C7}
+html.tema-claro .adr-confianza span{background:rgba(255,255,255,.6);border-color:rgba(11,23,54,.14);color:#22304F}
+html.tema-claro .panel-3d{background:rgba(255,255,255,.66);color:#22304F;border-color:rgba(11,23,54,.12);box-shadow:0 24px 48px rgba(11,23,54,.16),inset 0 1px 0 rgba(255,255,255,.9)}
+html.tema-claro .panel-tit{color:#54678C}
+html.tema-claro .panel-cal-grid span{background:rgba(11,23,54,.07)}
+html.tema-claro .panel-leyenda{color:#54678C}
+html.tema-claro .fila-recibo{border-bottom-color:rgba(11,23,54,.08)}
+html.tema-claro .panel-total{color:#0B1736;background:linear-gradient(90deg,rgba(56,189,248,.22),rgba(168,85,247,.22));border-color:rgba(11,23,54,.12)}
+html.tema-claro .panel-marcas span{background:rgba(255,255,255,.6);border-color:rgba(11,23,54,.12)}
+html.tema-claro nav button{background:#FFFFFF;border-color:#C9D6EE;color:#0B1736}
+html.tema-claro nav button.activo{background:#0B1736;color:#FFFFFF;border-color:#0B1736;box-shadow:0 10px 24px rgba(11,23,54,.3)}
+html.tema-claro .tarjeta{background:linear-gradient(180deg,#FFFFFF,#F0F5FE);border-color:rgba(11,23,54,.10);box-shadow:0 12px 32px rgba(11,23,54,.10)}
+html.tema-claro .tarjeta h2,html.tema-claro .tarjeta h3{color:#0B1736}
+html.tema-claro label{color:#22304F}
+html.tema-claro .peq{color:#54678C}
+html.tema-claro input,html.tema-claro select,html.tema-claro textarea{background:#FFFFFF;color:#12211A;border-color:#C9D6EE}
+html.tema-claro select option{background:#FFFFFF;color:#12211A}
+html.tema-claro input:focus,html.tema-claro select:focus,html.tema-claro textarea:focus{border-color:#2563EB;box-shadow:0 0 0 4px rgba(37,99,235,.16)}
+html.tema-claro button.accion{background:#0B1736;color:#FFFFFF;box-shadow:0 14px 30px rgba(11,23,54,.35),inset 0 2px 2px rgba(255,255,255,.35),inset 0 -4px 8px rgba(0,0,0,.35)}
+html.tema-claro button.secundario{border-color:rgba(11,23,54,.4);color:#0B1736}
+html.tema-claro button.peligro{border-color:rgba(214,58,58,.5);color:#B42318}
+html.tema-claro summary{color:#0B1736}
+html.tema-claro th,html.tema-claro td{border-bottom-color:rgba(11,23,54,.10)}
+html.tema-claro .aviso{background:#FFF3CD;border-color:#ECD28A;color:#8A5A00}
+html.tema-claro .error{background:#FDECEB;border-color:#F2B8B2;color:#7A271A}
+html.tema-claro .okcaja{background:#E7F6EE;border-color:#A9DCC0;color:#14532D}
+html.tema-claro .etiqueta{background:#E3EDFF;color:#0B1736}
+html.tema-claro .etiqueta.pendiente{background:#FFF3CD;color:#8A5A00}
+html.tema-claro .etiqueta.verificado{background:#D9F2E3;color:#137547}
+html.tema-claro .pendiente-caja{border-color:#C9D6EE;color:#54678C}
+html.tema-claro .perfil-carta{border-color:#E3EBF9;background:#FBFCFF}
+html.tema-claro .rapido-btn,html.tema-claro .ci-boton{background:#FFFFFF;border-color:#D7E1F2;color:#12211A;box-shadow:0 8px 20px rgba(11,23,54,.10)}
+html.tema-claro .cal-dia{background:#FFFFFF;border-color:#D7E1F2;color:#22304F}
+html.tema-claro .cal-dia .num{color:#0B1736}
+html.tema-claro .cal-dia.domingo{background:#FDF6E3}
+html.tema-claro .cal-dia.festivo{background:#FDEEEE}
+html.tema-claro .cal-dia.sin-registro{color:#8494B3}
+html.tema-claro .cal-dia.sel{outline-color:#2563EB}
+html.tema-claro .cal-cab div{color:#54678C}
+html.tema-claro .ci-pregunta{color:#0B1736}
+html.tema-claro .ci-boton.activo{background:linear-gradient(135deg,rgba(56,189,248,.20),rgba(168,85,247,.20));border-color:#2563EB;color:#0B1736}
+html.tema-claro .ci-paso button{border-color:#2563EB;background:#FFFFFF;color:#2563EB}
+html.tema-claro .ci-paso .ci-valor{color:#0B1736}
+html.tema-claro .ci-paso .ci-valor small{color:#54678C}
+html.tema-claro #terminos p{color:#33456B}
+html.tema-claro .acordeon-titulo{color:#0B1736}
+html.tema-claro .acordeon-flecha{color:#0B1736;border-color:rgba(11,23,54,.3)}
+html.tema-claro .acordeon.abierto>.acordeon-btn .acordeon-flecha{background:#0B1736;color:#FFFFFF;border-color:#0B1736}
+html.tema-claro .acordeon-mini{border-color:#E3EBF9;background:#F8FAFF}
+html.tema-claro .tarjeta a{color:#2563EB}
 /* La sección de valores por año es solo de administración: no se muestra en la web */
 #cfg-tarjeta{display:none!important}
 </style></head>
-<body>
+<body><button id="tema-btn" type="button" aria-label="Cambiar entre modo claro y modo oscuro">☀️ Claro</button>
 <!-- ============================================================
      Calcula tu Nómina (proyecto independiente)
      Una sola página: marcas tus días y calcula todo por ley.
@@ -1031,6 +1091,32 @@ catch(err){
   </div></div>
 </div>
 
+<div class="tarjeta acordeon revelar" id="normativa">
+  <button type="button" class="acordeon-btn" data-acordeon aria-expanded="false">
+    <span class="icono-oficio ico-normativa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21v-9"/><path d="M9.5 21v-9"/><path d="M14.5 21v-9"/><path d="M19 21v-9"/><path d="M2.5 12L12 4l9.5 8"/></svg></span>
+    <span class="acordeon-titulo">Normativa: cómo se liquida la nómina en Colombia</span>
+    <span class="acordeon-flecha"><span class="f-abrir">Abrir</span><span class="f-cerrar">Cerrar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+  </button>
+  <div class="acordeon-panel"><div class="acordeon-contenido">
+    <p>Estas son las reglas con las que esta calculadora hace tus cuentas, explicadas en palabras claras. Es un resumen informativo: la liquidación oficial la hace tu empleador con la ley vigente y tu contrato.</p>
+    <div class="leyes">
+      <h3>El salario mínimo y el auxilio de transporte</h3>
+      <p>Ningún trabajador puede ganar menos del salario mínimo legal, que el Gobierno fija cada año por decreto. En 2026 es <strong>$1.750.905</strong> al mes. Si ganas hasta dos salarios mínimos, además te deben pagar el <strong>auxilio de transporte</strong> (en 2026, <strong>$249.095</strong> al mes).</p>
+      <h3>La jornada de trabajo</h3>
+      <p>La jornada máxima es de <strong>42 horas a la semana</strong> (Ley 2101 de 2021; la reducción llegó a 42 horas el 15 de julio de 2026) sin que te puedan bajar el salario. El trabajo de <strong>día</strong> va de 6:00 a. m. a 7:00 p. m.; la <strong>noche</strong> empieza a las 7:00 p. m. (Ley 2466 de 2025). Tienes derecho a un día de <strong>descanso semanal obligatorio</strong>.</p>
+      <h3>Los recargos: lo que vale más tu hora</h3>
+      <p>Sobre el valor de tu hora normal: la hora <strong>nocturna</strong> paga un <strong>35%</strong> más; la hora <strong>extra de día</strong>, un <strong>25%</strong> más; la hora <strong>extra de noche</strong>, un <strong>75%</strong> más; y el trabajo en <strong>domingo o festivo</strong> paga un <strong>90%</strong> más en 2026 (sube a 100% desde julio de 2027). El tope normal de horas extras es de <strong>2 al día</strong>.</p>
+      <h3>Lo que te descuentan</h3>
+      <p>De tu salario te descuentan <strong>salud (EPS): 4%</strong> y <strong>pensión: 4%</strong>. La otra parte la pone tu empleador: salud 8,5% y pensión 12%, que no salen de tu bolsillo.</p>
+      <h3>Las prestaciones: plata que se va guardando para ti</h3>
+      <p><strong>Cesantías:</strong> un mes de salario por cada año trabajado, con intereses del 12% anual. <strong>Prima de servicios:</strong> otro mes de salario por año, pagado en dos mitades (junio y diciembre). <strong>Vacaciones:</strong> 15 días hábiles de descanso pago por cada año.</p>
+      <h3>Las incapacidades</h3>
+      <p>Por enfermedad general, la incapacidad se paga al <strong>66,67%</strong> del salario (sin bajar del salario mínimo diario); del día 91 al 180 se paga al 50%. Si es por <strong>accidente de trabajo</strong>, la ARL paga el <strong>100%</strong>.</p>
+    </div>
+    <p>¿Quieres comprobar tu propio pago? Marca tus días en el calendario de arriba: la calculadora aplica estas mismas reglas hora por hora.</p>
+  </div></div>
+</div>
+
 <div class="tarjeta revelar" id="comentarios">
 <div class="tarjeta-titulo"><span class="icono-oficio ico-comentarios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4c4.97 0 9 3.58 9 8s-4.03 8-9 8c-1.05 0-2.06-.18-3-.5L4 20.5l1.2-3.2C3.9 15.8 3 14 3 12c0-4.42 4.03-8 9-8z"/><path d="M8.2 12h.01M12 12h.01M15.8 12h.01" stroke-width="2.6"/></svg></span><h2>Déjanos tus comentarios</h2></div>
 <p>¿Tienes una duda con tu nómina, un caso con tu empleador o una pregunta sobre cómo usar la calculadora? Escríbenos aquí: tu comentario nos llega directo y lo leemos para ayudarte a revisar tu caso.</p>
@@ -1088,7 +1174,7 @@ document.getElementById('form-comentarios').addEventListener('submit', function 
 <footer class="adr-pie">
 <p class="adr-pie-marca">ADR <b>Software</b> · Aplicaciones y software a medida</p>
 <p>¿Necesitas una aplicación o una página web para tu negocio? Cuéntanos en la sección de <a href="#comentarios">comentarios</a>.</p>
-<p class="adr-pie-links"><a href="#instrucciones">Cómo usarla</a> · <a href="#vigilantes">Artículos para vigilantes</a> · <a href="#terminos">Términos y condiciones</a> · <a href="#comentarios">Comentarios</a></p>
+<p class="adr-pie-links"><a href="#instrucciones">Cómo usarla</a> · <a href="#vigilantes">Artículos para vigilantes</a> · <a href="#terminos">Términos y condiciones</a> · <a href="#normativa">Normativa</a> · <a href="#comentarios">Comentarios</a></p>
 <p class="adr-pie-nota">Calcula tu Nómina es una herramienta de referencia. La liquidación oficial la define tu empleador o la entidad competente.</p>
 </footer>
 <script>
@@ -1096,6 +1182,7 @@ document.querySelectorAll('[data-acordeon]').forEach(function(b){b.addEventListe
 if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.06});document.querySelectorAll('.revelar').forEach(function(el){io.observe(el);});}else{document.querySelectorAll('.revelar').forEach(function(el){el.classList.add('visible');});}
 (function(){var fino=window.matchMedia('(pointer:fine)').matches;var reducido=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(!fino||reducido)return;var cab=document.querySelector('header');var escena=document.querySelector('.adr-escena');if(cab&&escena){cab.addEventListener('pointermove',function(e){var r=cab.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5;var y=(e.clientY-r.top)/r.height-.5;escena.style.transform='perspective(950px) rotateY('+(x*7).toFixed(2)+'deg) rotateX('+(-y*7).toFixed(2)+'deg)';});cab.addEventListener('pointerleave',function(){escena.style.transform='';});}
 document.querySelectorAll('button.accion').forEach(function(b){b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5;var y=(e.clientY-r.top)/r.height-.5;b.style.transform='perspective(600px) rotateY('+(x*8).toFixed(2)+'deg) rotateX('+(-y*8).toFixed(2)+'deg) translateY(-3px)';});b.addEventListener('pointerleave',function(){b.style.transform='';});});})();
+(function(){var b=document.getElementById('tema-btn');if(!b)return;function pintar(){var claro=document.documentElement.classList.contains('tema-claro');b.textContent=claro?'🌙 Oscuro':'☀️ Claro';}pintar();b.addEventListener('click',function(){var claro=document.documentElement.classList.toggle('tema-claro');try{localStorage.setItem('calcula-nomina-tema',claro?'claro':'oscuro');}catch(e){}pintar();});})();
 </script>
 </body>
 </html>
